@@ -80,6 +80,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
         boolean ball2ReadyForEntry = false;
         boolean ball3ReadyForEntry = false;
 
+        // Variables are awesome!
+
 
 
 
