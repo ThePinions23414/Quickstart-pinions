@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 public class BlueGoalThreeBall extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
-
+// hello. andrea's dad SUCKS!!!!!!!!!!!
     public enum PathState {
         //START POSITION_END POSITION
         //DRIVE > MOVEMENT STATE
