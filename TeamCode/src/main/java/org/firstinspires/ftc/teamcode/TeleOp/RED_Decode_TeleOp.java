@@ -80,8 +80,6 @@ public class RED_Decode_TeleOp extends LinearOpMode {
         boolean ball2ReadyForEntry = false;
         boolean ball3ReadyForEntry = false;
 
-        // Variables are awesome!
-
 
 
 
@@ -508,63 +506,137 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 
 
                 if (!override) {
+//                    if (result.getTa() < 3.5 && result.getTa() > 2.9) {
+//                        velocity = 1100;
+//                        P = 40;
+//                        F = 13.51;
+//                        lHood.setPosition(0.95);
+//                        rHood.setPosition(0.05);
+//                    } else if (result.getTa() < 2.9 && result.getTa() > 2.3) {
+//                        velocity = 1200;
+//                        P = 64.05;
+//                        F = 13.0604;
+//                        lHood.setPosition(0.95);
+//                        rHood.setPosition(0.05);
+//                    } else if (result.getTa() < 2.3 && result.getTa() > 1.7) {
+//                        velocity = 1250;
+//                        P = 62;
+//                        F = 13.95;
+//                        lHood.setPosition(0.95);
+//                        rHood.setPosition(0.05);
+//                    } else if (result.getTa() < 1.7 && result.getTa() > 1.1) {
+//                        velocity = 1300;
+//                        P = 52;
+//                        F = 13.96;
+//                        lHood.setPosition(0.95);
+//                        rHood.setPosition(0.05);
+//                    } else if (result.getTa() < 1.1 && result.getTa() > 0.9) {
+//                        velocity = 1350;
+//                        P = 48;
+//                        F = 13.93;
+//                        lHood.setPosition(0.925);
+//                        rHood.setPosition(0.075);
+//                    } else if (result.getTa() < 0.9 && result.getTa() > 0.6) {
+//                        velocity = 1400;
+//                        P = 42;
+//                        F = 14.2;
+//                        lHood.setPosition(0.925);
+//                        rHood.setPosition(0.075);
+//                    } else if (result.getTa() < 0.6 && result.getTa() > 0.43) {
+//                        velocity = 1450;
+//                        P = 49;
+//                        F = 13.98;
+//                        lHood.setPosition(0.925);
+//                        rHood.setPosition(0.075);
+//                    } else if (result.getTa() < 0.43 && result.getTa() > 0.3) {
+//                        velocity = 1550;
+//                        P = 52;
+//                        F = 14.04;
+//                        lHood.setPosition(0.915);
+//                        rHood.setPosition(0.085);
+//                    } else if (result.getTa() < 0.3) {
+//                        velocity = 1650;
+//                        P = 52;
+//                        F = 14.04;
+//                        lHood.setPosition(0.915);
+//                        rHood.setPosition(0.085);
+//                    }
                     if (result.getTa() < 3.5 && result.getTa() > 2.9) {
                         velocity = 1100;
                         P = 40;
                         F = 13.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
-                    } else if (result.getTa() < 2.9 && result.getTa() > 2.3) {
-                        velocity = 1200;
-                        P = 64.05;
-                        F = 13.0604;
+                    } else if (result.getTa() < 2.9 && result.getTa() > 2.5) {
+                        velocity = 1125;
+                        P = 49;
+                        F = 12.7;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
-                    } else if (result.getTa() < 2.3 && result.getTa() > 1.7) {
-                        velocity = 1250;
-                        P = 62;
-                        F = 13.95;
+                    }else if (result.getTa() < 2.5 && result.getTa() > 2) {
+                        velocity = 1175;
+                        P = 50;
+                        F = 12.46;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
-                    } else if (result.getTa() < 1.7 && result.getTa() > 1.1) {
-                        velocity = 1300;
+                    } else if (result.getTa() < 2 && result.getTa() > 1.5) {
+                        velocity = 1225;
                         P = 52;
-                        F = 13.96;
+                        F = 12.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
-                    } else if (result.getTa() < 1.1 && result.getTa() > 0.9) {
-                        velocity = 1350;
-                        P = 48;
-                        F = 13.93;
+                    }else if (result.getTa() < 1.5 && result.getTa() > 1) {
+                        velocity = 1300;
+                        P = 50;
+                        F = 12.6;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
-                    } else if (result.getTa() < 0.9 && result.getTa() > 0.6) {
+                    } else if (result.getTa() < 1 && result.getTa() > 0.8) {
+                        velocity = 1350;
+                        P = 52;
+                        F = 12.68;
+                        lHood.setPosition(0.925);
+                        rHood.setPosition(0.075);
+                    } else if (result.getTa() < 0.8 && result.getTa() > 0.6) {
                         velocity = 1400;
-                        P = 42;
-                        F = 14.2;
+                        P = 48;
+                        F = 12.47;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 0.6 && result.getTa() > 0.43) {
                         velocity = 1450;
-                        P = 49;
-                        F = 13.98;
+                        P = 50;
+                        F = 12.1;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
-                    } else if (result.getTa() < 0.43 && result.getTa() > 0.3) {
+                    } else if (result.getTa() < 0.43 && result.getTa() > 0.38) {
                         velocity = 1550;
-                        P = 52;
-                        F = 14.04;
+                        P = 44;
+                        F = 11.8;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
-                    } else if (result.getTa() < 0.3) {
-                        velocity = 1650;
+                    } else if (result.getTa() < 0.38 && result.getTa() > 0.33) {
+                        velocity = 1600;
                         P = 52;
-                        F = 14.04;
+                        F = 11.7;
+                        lHood.setPosition(0.915);
+                        rHood.setPosition(0.085);
+                    } else if (result.getTa() < 0.33 && result.getTa() > 0.28) {
+                        velocity = 1650;
+                        P = 44;
+                        F = 11.8;
+                        lHood.setPosition(0.915);
+                        rHood.setPosition(0.085);
+                    } else if (result.getTa() < 0.28 && result.getTa() > 0.23) {
+                        velocity = 1700;
+                        P = 53;
+                        F = 13;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     }
 
                 }
+
 
 
             }else{
@@ -650,21 +722,20 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 
             }
             if(gamepad2.dpad_down && override){
-                velocity = 1200;
-                P = 64.05;
-                F = 13.0604;
-                shooterActivated = true;
+                velocity = 1175;
+                P = 50;
+                F = 12.46;
                 lHood.setPosition(0.95);
                 rHood.setPosition(0.05);
-                light1.setPosition(0.4);
+                shooterActivated = true;
             }
             if(gamepad2.dpad_up && override){
-                velocity = 1550;
+                velocity = 1600;
                 P = 52;
-                F = 14.04;
-                shooterActivated = true;
+                F = 11.7;
                 lHood.setPosition(0.915);
                 rHood.setPosition(0.085);
+                shooterActivated = true;
             }
 
 
