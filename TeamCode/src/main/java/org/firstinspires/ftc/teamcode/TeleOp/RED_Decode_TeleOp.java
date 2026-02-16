@@ -57,7 +57,7 @@ public class RED_Decode_TeleOp extends LinearOpMode {
         double blueValue = 0;
         double velocity = 0;
         double idleVelocity = 300;
-        double slot1Position = 0.15;
+        double slot1Position = 0.185;
         double slot2Position = 0.22;
         double slot3Position = 0.3;
         double F = 0;
@@ -107,6 +107,7 @@ public class RED_Decode_TeleOp extends LinearOpMode {
         ElapsedTime ball1TravelTimer = new ElapsedTime();
         ElapsedTime ball2TravelTimer = new ElapsedTime();
         ElapsedTime ball3TravelTimer = new ElapsedTime();
+        ElapsedTime iDoNotSeeTheSignTimer = new ElapsedTime();
 
         LimitSwitch limitSwitch = new LimitSwitch();
         limitSwitch.init(hardwareMap);
@@ -142,8 +143,9 @@ public class RED_Decode_TeleOp extends LinearOpMode {
         rumbleTimer.reset();
         spindexerTimer.reset();
         ball1TravelTimer.reset();
-        ball2TravelTimer.seconds();
-        ball3TravelTimer.seconds();
+        ball2TravelTimer.reset();
+        ball3TravelTimer.reset();
+        iDoNotSeeTheSignTimer.reset();
 
 
 
@@ -173,9 +175,9 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 //                  lHood.setPosition(1);
 //                  rHood.setPosition(0);
 //              }
-//
-//
-//
+
+
+
             PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
             shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
@@ -204,9 +206,9 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 
 
 
-            if (spindexerTimer.seconds() > 75 && !someoneTurnedOffSpindexer) {
-                spindexerOn = true;
-            }
+//            if (spindexerTimer.seconds() > 75 && !someoneTurnedOffSpindexer) {
+//                spindexerOn = true;
+//            }
             if(rumbleTimer.seconds() > 75 && rumbleTimer.seconds() < 77){
                 gamepad1.rumble(1000);
                 gamepad2.rumble(1000);
@@ -402,6 +404,7 @@ public class RED_Decode_TeleOp extends LinearOpMode {
             if (result.isValid()) {
                 // Access general information
 
+                iDoNotSeeTheSignTimer.reset();
                 telemetry.addData("tx", result.getTx());
                 telemetry.addData("ty", result.getTy());
                 telemetry.addData("ta", result.getTa());
@@ -643,7 +646,7 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                 telemetry.addLine("No AprilTag in sight");
             }
 
-            if (result.getTa() == 0) {
+            if (result.getTa() == 0 && iDoNotSeeTheSignTimer.seconds() > 1) {
                 velocity = 1100;
                 P = 40;
                 F = 13.51;
@@ -801,6 +804,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
             telemetry.addData("blue", blueValue);
             telemetry.addData("Left Magnet state" , limitSwitch.isLeftLimitSwitchClosed());
             telemetry.addData("Right Magnet state" , limitSwitch.isRightLimitSwitchClosed());
+            telemetry.addData("Current Velocity", shooter.getVelocity());
+            telemetry.addData("Target Velocity", velocity);
             telemetry.update();
 
 
