@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -58,8 +59,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
         double velocity = 0;
         double idleVelocity = 300;
         double slot1Position = 0.185;
-        double slot2Position = 0.22;
-        double slot3Position = 0.3;
+        double slot2Position = 0.255;
+        double slot3Position = 0.335;
         double F = 0;
         double P = 0;
         int ballCount = 0;
@@ -111,6 +112,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 
         LimitSwitch limitSwitch = new LimitSwitch();
         limitSwitch.init(hardwareMap);
+        LEDLights lights = new LEDLights();
+        lights.init(hardwareMap);
 
 //        double[] numbers = {0, 0.2, 0.4, 0.6, 0.8};
 //
@@ -421,13 +424,17 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                     if(limitSwitch.isLeftLimitSwitchClosed()){
                         telemetry.addLine("Limit Reached");
                     }else{
-                        turret.setPosition(turret.getPosition() - 0.0005);
+                        turret.setPosition(turret.getPosition() - 0.00175);
                         telemetry.addLine("Moving left");
+                        lights.setRedLed1(true);
+                        lights.setGreenLed1(true);
                     }
                 }
 
                 else if(result.getTx() > -3 && result.getTx() < 1){
                     telemetry.addLine("Stopped");
+                    lights.setRedLed1(true);
+                    lights.setGreenLed1(false);
 
 
                 }
@@ -436,8 +443,10 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                     if(limitSwitch.isRightLimitSwitchClosed()){
                         telemetry.addLine("Limit Reached");
                     }else{
-                        turret.setPosition(turret.getPosition() + 0.0005);
+                        turret.setPosition(turret.getPosition() + 0.00175);
                         telemetry.addLine("Moving right");
+                        lights.setRedLed1(true);
+                        lights.setGreenLed1(true);
                     }
                 }
 
@@ -566,73 +575,73 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 //                    }
                     if (result.getTa() < 3.5 && result.getTa() > 2.9) {
                         velocity = 1100;
-                        P = 40;
+                        P = 100;
                         F = 13.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     } else if (result.getTa() < 2.9 && result.getTa() > 2.5) {
                         velocity = 1125;
-                        P = 49;
+                        P = 100;
                         F = 12.7;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     }else if (result.getTa() < 2.5 && result.getTa() > 2) {
                         velocity = 1175;
-                        P = 50;
+                        P = 100;
                         F = 12.46;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     } else if (result.getTa() < 2 && result.getTa() > 1.5) {
                         velocity = 1225;
-                        P = 52;
+                        P = 100;
                         F = 12.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     }else if (result.getTa() < 1.5 && result.getTa() > 1) {
                         velocity = 1300;
-                        P = 50;
+                        P = 120;
                         F = 12.6;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 1 && result.getTa() > 0.8) {
                         velocity = 1350;
-                        P = 52;
+                        P = 120;
                         F = 12.68;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 0.8 && result.getTa() > 0.6) {
                         velocity = 1400;
-                        P = 48;
+                        P = 120;
                         F = 12.47;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 0.6 && result.getTa() > 0.43) {
                         velocity = 1450;
-                        P = 50;
+                        P = 120;
                         F = 12.1;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 0.43 && result.getTa() > 0.38) {
                         velocity = 1550;
-                        P = 44;
+                        P = 140;
                         F = 11.8;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     } else if (result.getTa() < 0.38 && result.getTa() > 0.33) {
                         velocity = 1600;
-                        P = 52;
-                        F = 11.7;
+                        P = 140;
+                        F = 12.3;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     } else if (result.getTa() < 0.33 && result.getTa() > 0.28) {
                         velocity = 1650;
-                        P = 44;
-                        F = 11.8;
+                        P = 140;
+                        F = 12.6;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     } else if (result.getTa() < 0.28 && result.getTa() > 0.23) {
                         velocity = 1700;
-                        P = 53;
+                        P = 140;
                         F = 13;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
@@ -644,11 +653,13 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 
             }else{
                 telemetry.addLine("No AprilTag in sight");
+                lights.setRedLed1(false);
+                lights.setGreenLed1(true);
             }
 
             if (result.getTa() == 0 && iDoNotSeeTheSignTimer.seconds() > 1) {
                 velocity = 1100;
-                P = 40;
+                P = 100;
                 F = 13.51;
                 lHood.setPosition(0.95);
                 rHood.setPosition(0.05);
@@ -792,10 +803,22 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                 spindexer.setPosition(slot3Position);
             }
 
+            if(shooter.getVelocity() > velocity - 50 && shooter.getVelocity() < velocity + 50){
+                lights.setRedLed2(true);
+                lights.setGreenLed2(false);
+            } else if (shooter.getVelocity() > velocity - 150 && shooter.getVelocity() < velocity - 50 || shooter.getVelocity() < velocity + 150 && shooter.getVelocity() > velocity + 50) {
+                lights.setRedLed2(true);
+                lights.setGreenLed2(true);
+            }else {
+                lights.setRedLed2(false);
+                lights.setGreenLed2(true);
+            }
+
             telemetry.addData("Match Timer", rumbleTimer);
             telemetry.addData("ball 1 timer", ball1TravelTimer);
             telemetry.addData("ball 2 timer", ball2TravelTimer);
             telemetry.addData("ball 3 timer", ball3TravelTimer);
+            telemetry.addData("IDidNotSeeTheSignTimer", iDoNotSeeTheSignTimer);
             telemetry.addData("Ball Count", ballCount);
             telemetry.addData("slot1color", slot1Color);
             telemetry.addData("slot2color", slot2Color);
