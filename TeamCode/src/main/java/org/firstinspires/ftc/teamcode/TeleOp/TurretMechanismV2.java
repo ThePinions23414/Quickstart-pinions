@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,24 +16,24 @@ import org.openftc.apriltag.AprilTagDetection;
 import java.util.List;
 
 public class TurretMechanismV2 {
-    private DcMotorEx turret;
+    private CRServo turret;
     private Limelight3A limelight;
     private double kP = 0.0001;
-    private double kD = 0.0000;
+    private double kD = 0.000000;
     private double goalX = 0;
     private double lastError = 0;
-    private double angleTolerance = 0.2;
-    private final double MAX_POWER = 0.8;
+    private double angleTolerance = 3;
+    private final double MAX_POWER = 1;
     private double power = 0;
     private final ElapsedTime timer = new ElapsedTime();
+    LimitSwitch limitSwitch = new LimitSwitch();
 
 
 
 
     public void init(HardwareMap hwMap){
-        turret = hwMap.get(DcMotorEx.class, "intake");
-
-        turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        turret = hwMap.get(CRServo.class, "turret");
+        limitSwitch.init(hwMap);
 
     }
 
@@ -76,14 +77,14 @@ public class TurretMechanismV2 {
         }
 
         double error = goalX - result.getTx();
-        double pTerm = error * kP;
+        double pTerm = -error * kP;
 
         double dTerm = 0;
         if (deltaTime > 0){
             dTerm = ((error - lastError) / deltaTime) * kD;
         }
 
-        if (Math.abs(error) < angleTolerance){
+        if (Math.abs(error) < angleTolerance || limitSwitch.isRightLimitSwitchClosed()|| limitSwitch.isLeftLimitSwitchClosed()){
             power = 0;
         } else{
             power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
