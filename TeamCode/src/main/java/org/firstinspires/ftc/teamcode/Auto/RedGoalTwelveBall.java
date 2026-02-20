@@ -44,18 +44,18 @@ public class RedGoalTwelveBall extends OpMode {
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(123.57742402315485, 122.61649782923298, Math.toRadians(217));
-    private final Pose shoot1Pose = new Pose(96.21997105643996, 95.80897250361795, Math.toRadians(41));
-    private final Pose ball1Pose = new Pose(96.16931982633862, 83.97250361794502, Math.toRadians(0));
-    private final Pose pick1Pose = new Pose(128.9696092619392, 83.33140376266283, Math.toRadians(0));
-    private final Pose shoot2Pose = new Pose(96.03907380607814, 95.79160636758324, Math.toRadians(41));
-    private final Pose ball2Pose = new Pose(96.06657018813314, 59.09696092619392, Math.toRadians(0));
-    private final Pose pick2Pose = new Pose(129.2040520984081, 59.18379160636757, Math.toRadians(0));
-    private final Pose shoot3Pose = new Pose(95.80318379160637, 95.88277858176555, Math.toRadians(41));
-    private final Pose ball3Pose = new Pose(96.00434153400866, 35.311143270622274, Math.toRadians(0));
-    private final Pose pick3Pose = new Pose(128.89435600578872, 35.09117221418234, Math.toRadians(0));
-    private final Pose shoot4Pose = new Pose(96.11287988422576, 95.82199710564402, Math.toRadians(41));
-    private final Pose endPose = new Pose(124.65267727930537, 71.89869753979741, Math.toRadians(41));
+    private final Pose startPose = new Pose(124, 123, Math.toRadians(217));
+    private final Pose shoot1Pose = new Pose(96, 96, Math.toRadians(41));
+    private final Pose ball1Pose = new Pose(96, 84, Math.toRadians(0));
+    private final Pose pick1Pose = new Pose(129, 84, Math.toRadians(0));
+    private final Pose shoot2Pose = new Pose(96, 96, Math.toRadians(41));
+    private final Pose ball2Pose = new Pose(96, 60, Math.toRadians(0));
+    private final Pose pick2Pose = new Pose(129, 60, Math.toRadians(0));
+    private final Pose shoot3Pose = new Pose(96, 96, Math.toRadians(41));
+    private final Pose ball3Pose = new Pose(96, 36, Math.toRadians(0));
+    private final Pose pick3Pose = new Pose(129, 36, Math.toRadians(0));
+    private final Pose shoot4Pose = new Pose(96, 96, Math.toRadians(41));
+    private final Pose endPose = new Pose(125, 72, Math.toRadians(41));
 
 
 

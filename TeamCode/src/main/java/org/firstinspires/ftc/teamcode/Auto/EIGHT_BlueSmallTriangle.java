@@ -54,7 +54,6 @@ public class EIGHT_BlueSmallTriangle extends OpMode {
     private final Pose ball2Pose = new Pose(13.26666666666667, 16.488888888888887, Math.toRadians(195));
     private final Pose ball2Pose2 = new Pose(22, 16.333333333333334, Math.toRadians(195));
     private final Pose ball2Pose3 = new Pose(11, 11.955555555555568, Math.toRadians(200));
-
     private final Pose shoot3Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(112.5));
     private final Pose endPose = new Pose(45.40217772097908, 24.37153723529663, Math.toRadians(90));
 

@@ -44,18 +44,18 @@ public class BlueGoalTwelveBall extends OpMode {
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(20.156295224312593, 122.61649782923301, Math.toRadians(325));
-    private final Pose shoot1Pose = new Pose(48.08104196816209, 95.39218523878435, Math.toRadians(134));
-    private final Pose ball1Pose = new Pose(48.23878437047757, 83.76410998552822, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(15.603473227206942, 83.3314037626628, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(48.108538350217074, 95.37481910274963, Math.toRadians(134));
-    private final Pose ball2Pose = new Pose(47.71924746743849, 60.13892908827786, Math.toRadians(180));
-    private final Pose pick2Pose = new Pose(15.31548480463098, 59.842257597684515, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(47.872648335745296, 95.46599131693199, Math.toRadians(134));
-    private final Pose ball3Pose = new Pose(47.86541244573082, 35.727930535455855, Math.toRadians(180));
-    private final Pose pick3Pose = new Pose(15.736613603473227, 35.71635311143271, Math.toRadians(180));
-    private final Pose shoot4Pose = new Pose(47.97395079594791, 95.19681620839364, Math.toRadians(134));
-    private final Pose endPose = new Pose(19.622286541244573, 71.89869753979741, Math.toRadians(0));
+    private final Pose startPose = new Pose(20, 123, Math.toRadians(325));
+    private final Pose shoot1Pose = new Pose(48, 96, Math.toRadians(134));
+    private final Pose ball1Pose = new Pose(48, 84, Math.toRadians(180));
+    private final Pose pick1Pose = new Pose(16, 84, Math.toRadians(180));
+    private final Pose shoot2Pose = new Pose(48, 96, Math.toRadians(134));
+    private final Pose ball2Pose = new Pose(48, 60, Math.toRadians(180));
+    private final Pose pick2Pose = new Pose(16, 60, Math.toRadians(180));
+    private final Pose shoot3Pose = new Pose(48, 96, Math.toRadians(134));
+    private final Pose ball3Pose = new Pose(48, 36, Math.toRadians(180));
+    private final Pose pick3Pose = new Pose(16, 36, Math.toRadians(180));
+    private final Pose shoot4Pose = new Pose(48, 96, Math.toRadians(134));
+    private final Pose endPose = new Pose(20, 72, Math.toRadians(0));
 
 
 
