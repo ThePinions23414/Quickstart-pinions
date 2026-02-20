@@ -134,6 +134,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
 
 
         limelight.start();
+        telemetry.addLine("I'm ready");
+        telemetry.update();
 
 
 
@@ -681,7 +683,7 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                 spindexerOn = true;
             }
 
-            if (gamepad2.a) {
+            if (gamepad2.a && !override) {
                 someoneTurnedOffSpindexer = true;
                 spindexerOn = false;
             }
@@ -801,6 +803,15 @@ public class RED_Decode_TeleOp extends LinearOpMode {
             }
             if(gamepad2.b && override){
                 spindexer.setPosition(slot3Position);
+            }
+
+            if (gamepad2.aWasPressed() && override){
+                upperRoller.setPower(1);
+                gate.setPosition(0.2);
+
+            }
+            else if (gamepad2.aWasReleased() && override) {
+                upperRoller.setPower(0);
             }
 
             if(shooter.getVelocity() > velocity - 50 && shooter.getVelocity() < velocity + 50){

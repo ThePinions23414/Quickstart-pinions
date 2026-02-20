@@ -21,6 +21,9 @@ public class IntakeLogicSmallTriangle {
     public boolean readyToIntake = false;
     int ballsRemaining = 0;
     int ballPickUpNumber = 1;
+    double slot1Position = 0.185;
+    double slot2Position = 0.255;
+    double slot3Position = 0.335;
     private enum IntakeState {
         IDLE,
         INTAKE,
@@ -51,7 +54,7 @@ public class IntakeLogicSmallTriangle {
             case IDLE:
 
                 if (ballsRemaining > 0) {
-                    spindexer.setPosition(0.15);
+                    spindexer.setPosition(slot1Position);
                     stateTimer.reset();
                     intakeTimer.reset();
                     intakeState = IntakeState.INTAKE;
@@ -88,17 +91,17 @@ public class IntakeLogicSmallTriangle {
                 break;
             case SPINDEX:
                 if (ballsRemaining == 3) {
-                    if (stateTimer.seconds() > 0.65) {
-                        spindexer.setPosition(0.22);
+                    if (stateTimer.seconds() > 0.5) {
+                        spindexer.setPosition(slot2Position);
                         ballsRemaining--;
 
                     }
                 }else if (ballsRemaining == 2) {
-                    if(stateTimer.seconds() > 0.75){
+                    if(stateTimer.seconds() > 0.5){
                         lLifter.setPower(1);
                         rLifter.setPower(-1);
                         if(stateTimer.seconds() > 2){
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                             ballsRemaining--;
                         }
                     }
@@ -107,7 +110,7 @@ public class IntakeLogicSmallTriangle {
                 } else if (ballsRemaining == 1) {
 
                     if(stateTimer.seconds() > 3.5){
-                        spindexer.setPosition(0.15);
+                        spindexer.setPosition(slot1Position);
                         ballsRemaining--;
                     }
                 } else if (ballsRemaining == 0) {

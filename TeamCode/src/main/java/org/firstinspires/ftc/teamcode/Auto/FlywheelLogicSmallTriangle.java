@@ -42,12 +42,21 @@ public class FlywheelLogicSmallTriangle {
     private double flywheelVelocity = 0;
     private double MIN_FLYWHEEL_RPM = 1400;
     private double TARGET_FLYWHEEL_RPM = 1550;
-    private double FLYWHEEL_MAX_SPINUP_TIME = 2.25;
-    double P = 52;
+    private double FLYWHEEL_MAX_SPINUP_TIME = 3;
+    double P = 140;
     double F = 14.04;
 
 
     boolean spinningUp = false;
+
+
+    double slot1Position = 0.185;
+    double slot2Position = 0.255;
+    double slot3Position = 0.335;
+    double turretPosition = 0.045;
+    double lHoodPosition = 0.915;
+    double rHoodPosition = 0.085;
+
 
     private String pattern = "";
 
@@ -72,9 +81,9 @@ public class FlywheelLogicSmallTriangle {
         flywheelState = FlywheelState.IDLE;
 
         shooter.setVelocity(0);
-        spindexer.setPosition(0.22);
-        leftHood.setPosition(0.915);
-        rightHood.setPosition(0.085);
+        spindexer.setPosition(slot1Position);
+        leftHood.setPosition(lHoodPosition);
+        rightHood.setPosition(rHoodPosition);
 
 
 
@@ -120,7 +129,7 @@ public class FlywheelLogicSmallTriangle {
             case SPIN_UP:
                 shooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 gate.setPosition(0.7);
-                turret.setPosition(0.07);
+                turret.setPosition(turretPosition);
                 lowerRoller.setPower(1);
                 upperRoller.setPower(0);
                 if(shotsRemaining > 0){
@@ -133,79 +142,79 @@ public class FlywheelLogicSmallTriangle {
                 if(shotNumber == 1){
                     if (pattern.equals("GPP")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         }
                     } else if (pattern.equals("PGP")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         }
                     } else if (pattern.equals("PPG")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         }
                     }
                 } else if (shotNumber == 2) {
                     if (pattern.equals("GPP")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         }
                     } else if (pattern.equals("PGP")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         }
                     } else if (pattern.equals("PPG")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         }
                     }
                 } else if(shotNumber == 3) {
                     if (pattern.equals("GPP")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         }
                     } else if (pattern.equals("PGP")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         }
                     } else if (pattern.equals("PPG")) {
                         if (shotsRemaining == 3) {
-                            spindexer.setPosition(0.15);
+                            spindexer.setPosition(slot1Position);
                         } else if (shotsRemaining == 2) {
-                            spindexer.setPosition(0.3);
+                            spindexer.setPosition(slot3Position);
                         } else if (shotsRemaining == 1) {
-                            spindexer.setPosition(0.22);
+                            spindexer.setPosition(slot2Position);
                         }
                     }
                 }
@@ -227,7 +236,7 @@ public class FlywheelLogicSmallTriangle {
 
 
 
-                        if (shootTimer.seconds() > 1.6){
+                        if (shootTimer.seconds() > 1.25){
                             upperRoller.setPower(0);
                             shotsRemaining--;
                             if (shotsRemaining > 0) {

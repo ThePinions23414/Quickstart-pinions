@@ -42,14 +42,14 @@ public class BlueSmallTriangle extends OpMode {
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(63.64444444444444, 8.177777777777768, Math.toRadians(90));
-    private final Pose shoot1Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(112.5));
+    private final Pose startPose = new Pose(55.99750623441396, 8.177777777777768, Math.toRadians(90));
+    private final Pose shoot1Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
     private final Pose ball1Pose = new Pose(44.555555555555564, 35.37777777777776, Math.toRadians(180));
     private final Pose pick1Pose = new Pose(8.266666666666671, 35.688888888888876, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(112.5));
+    private final Pose shoot2Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
     private final Pose ball2Pose = new Pose(44.55555555555556, 59.26978997878086, Math.toRadians(180));
     private final Pose pick2Pose = new Pose(12.222222222222225, 59.26978997878086, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(112.5));
+    private final Pose shoot3Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
     private final Pose endPose = new Pose(45.40217772097908, 24.37153723529663, Math.toRadians(90));
 
 
