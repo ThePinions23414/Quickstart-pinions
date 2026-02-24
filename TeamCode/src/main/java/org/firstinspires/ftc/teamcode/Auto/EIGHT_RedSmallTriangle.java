@@ -36,6 +36,10 @@ public class EIGHT_RedSmallTriangle extends OpMode {
         DRIVE_BALL2POS_BALL2POS2,
         DRIVE_BALL2POS2_BALL2POS3,
         DRIVE_BALL2POS3_SHOOT3POS,
+
+
+
+
         SHOOT_PRELOAD3,
         DRIVE_SHOOT3POS_ENDPOS
     }

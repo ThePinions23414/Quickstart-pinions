@@ -44,7 +44,6 @@ public class BlueSmallTriangle12Ball extends OpMode {
 
     PathState pathState;
 
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Auto/BlueSmallTriangle12Ball.java
     private final Pose startPose = new Pose(55.99750623441396, 8.177777777777768, Math.toRadians(90));
     private final Pose shoot1Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
     private final Pose ball1Pose = new Pose(47.86541244573082, 35.727930535455855, Math.toRadians(180));
@@ -58,20 +57,6 @@ public class BlueSmallTriangle12Ball extends OpMode {
     private final Pose shoot4Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
     private final Pose endPose = new Pose(45.40217772097908, 24.37153723529663, Math.toRadians(90));
 
-=======
-    private final Pose startPose = new Pose(20, 123, Math.toRadians(325));
-    private final Pose shoot1Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose ball1Pose = new Pose(48, 84, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(16, 84, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose ball2Pose = new Pose(48, 60, Math.toRadians(180));
-    private final Pose pick2Pose = new Pose(16, 60, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose ball3Pose = new Pose(48, 36, Math.toRadians(180));
-    private final Pose pick3Pose = new Pose(16, 36, Math.toRadians(180));
-    private final Pose shoot4Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose endPose = new Pose(20, 72, Math.toRadians(0));
->>>>>>> 5819701831b6eff22dbbfa8a6fe28ce166a354ef:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Auto/BlueGoalTwelveBall.java
 
 
 
