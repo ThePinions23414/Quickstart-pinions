@@ -11,12 +11,12 @@ import com.pedropathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class BlueSmallTriangle12Ball extends OpMode {
+public class RedFarTwelveBall extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
-    private FlywheelLogicNotSortedST shooter = new FlywheelLogicNotSortedST();
-    private IntakeLogicNotSorted intake = new IntakeLogicNotSorted();
+    private FlywheelLogic shooter = new FlywheelLogic();
+    private IntakeLogic intake = new IntakeLogic();
 
     private boolean shotsTriggered = false;
     private boolean intakeTriggered = false;
@@ -44,35 +44,18 @@ public class BlueSmallTriangle12Ball extends OpMode {
 
     PathState pathState;
 
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Auto/BlueSmallTriangle12Ball.java
-    private final Pose startPose = new Pose(55.99750623441396, 8.177777777777768, Math.toRadians(90));
-    private final Pose shoot1Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
-    private final Pose ball1Pose = new Pose(47.86541244573082, 35.727930535455855, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(14.736613603473227, 35.71635311143271, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(115));
-    private final Pose ball2Pose = new Pose(44.96708019868828, 59.76978997878086, Math.toRadians(180));
-    private final Pose pick2Pose = new Pose(12.18419849537037, 59.70268438143005, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(115));
-    private final Pose ball3Pose = new Pose(45.9868151470336, 84, Math.toRadians(180));
-    private final Pose pick3Pose = new Pose(19.00656702782064, 84, Math.toRadians(180));
-    private final Pose shoot4Pose = new Pose(55.55555555555555, 12.177777777777763, Math.toRadians(114));
-    private final Pose endPose = new Pose(45.40217772097908, 24.37153723529663, Math.toRadians(90));
-
-=======
-    private final Pose startPose = new Pose(20, 123, Math.toRadians(325));
-    private final Pose shoot1Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose ball1Pose = new Pose(48, 84, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(16, 84, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose ball2Pose = new Pose(48, 60, Math.toRadians(180));
-    private final Pose pick2Pose = new Pose(16, 60, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose ball3Pose = new Pose(48, 36, Math.toRadians(180));
-    private final Pose pick3Pose = new Pose(16, 36, Math.toRadians(180));
-    private final Pose shoot4Pose = new Pose(48, 96, Math.toRadians(134));
-    private final Pose endPose = new Pose(20, 72, Math.toRadians(0));
->>>>>>> 5819701831b6eff22dbbfa8a6fe28ce166a354ef:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Auto/BlueGoalTwelveBall.java
-
+    private final Pose startPose = new Pose(88, 9, Math.toRadians(90));
+    private final Pose shoot1Pose = new Pose(88, 12, Math.toRadians(70));
+    private final Pose ball1Pose = new Pose(88, 36, Math.toRadians(0));
+    private final Pose pick1Pose = new Pose(135, 36, Math.toRadians(0));
+    private final Pose shoot2Pose = new Pose(88, 12, Math.toRadians(70));
+    private final Pose ball2Pose = new Pose(88, 60, Math.toRadians(0));
+    private final Pose pick2Pose = new Pose(135, 60, Math.toRadians(0));
+    private final Pose shoot3Pose = new Pose(88, 12, Math.toRadians(70));
+    private final Pose ball3Pose = new Pose(88, 84, Math.toRadians(0));
+    private final Pose pick3Pose = new Pose(129, 84, Math.toRadians(0));
+    private final Pose shoot4Pose = new Pose(88, 12, Math.toRadians(70));
+    private final Pose endPose = new Pose(114, 20, Math.toRadians(180));
 
 
     private PathChain driveStartPosShoot1Pos, driveShoot1PosBall1Pos, driveBall1PosPick1Pos, drivePick1PosShoot2Pos, driveShoot2PosBall2Pos, driveBall2PosPick2Pos, drivePick2PosShoot3Pos, driveShoot3PosBall3Pos, driveBall3PosPick3Pos, drivePick3PosShoot4Pos, driveShoot4PosEndPos;
@@ -107,16 +90,16 @@ public class BlueSmallTriangle12Ball extends OpMode {
                 .setLinearHeadingInterpolation(pick2Pose.getHeading(), shoot3Pose.getHeading())
                 .build();
         driveShoot3PosBall3Pos = follower.pathBuilder()
-                .addPath(new BezierLine(shoot3Pose, ball3Pose))
+                .addPath(new BezierLine(shoot2Pose, ball2Pose))
                 .setLinearHeadingInterpolation(shoot3Pose.getHeading(), ball3Pose.getHeading())
                 .build();
         driveBall3PosPick3Pos = follower.pathBuilder()
-                .addPath(new BezierLine(ball3Pose, pick3Pose))
-                .setLinearHeadingInterpolation(ball3Pose.getHeading(), pick3Pose.getHeading())
+                .addPath(new BezierLine(ball2Pose, pick2Pose))
+                .setLinearHeadingInterpolation(ball2Pose.getHeading(), pick2Pose.getHeading())
                 .build();
         drivePick3PosShoot4Pos = follower.pathBuilder()
-                .addPath(new BezierLine(pick3Pose, shoot4Pose))
-                .setLinearHeadingInterpolation(pick3Pose.getHeading(), shoot4Pose.getHeading())
+                .addPath(new BezierLine(pick3Pose, shoot3Pose))
+                .setLinearHeadingInterpolation(pick3Pose.getHeading(), shoot3Pose.getHeading())
                 .build();
         driveShoot4PosEndPos = follower.pathBuilder()
                 .addPath(new BezierLine(shoot4Pose, endPose))
@@ -127,7 +110,7 @@ public class BlueSmallTriangle12Ball extends OpMode {
     public void statePathUpdate() {
         switch(pathState) {
             case DRIVE_STARTPOS_SHOOT1POS:
-
+                shooter.getID();
                 shooter.spinUp(true);
                 follower.followPath(driveStartPosShoot1Pos, true);
                 setPathState(PathState.SHOOT_PRELOAD1);
@@ -194,7 +177,7 @@ public class BlueSmallTriangle12Ball extends OpMode {
             case DRIVE_PICK2POS_SHOOT3POS:
                 if(!follower.isBusy()){
                     follower.followPath(drivePick2PosShoot3Pos, true);
-                    setPathState(PathState.SHOOT_PRELOAD3);
+                    setPathState(PathState.DRIVE_SHOOT3POS_BALL3POS);
                 }
                 break;
             case SHOOT_PRELOAD3:
@@ -204,21 +187,21 @@ public class BlueSmallTriangle12Ball extends OpMode {
                         shotsTriggered = true;
                     }
                     else if (shotsTriggered && !shooter.isBusy()) {
-                        setPathState(PathState.DRIVE_SHOOT3POS_BALL3POS);
+                        setPathState(PathState.DRIVE_SHOOT4POS_ENDPOS);
                     }
                 }
                 break;
             case DRIVE_SHOOT3POS_BALL3POS:
                 if(!follower.isBusy()){
-                    follower.followPath(driveShoot3PosBall3Pos, true);
-                    setPathState(PathState.DRIVE_BALL3POS_PICK3POS);
+                    follower.followPath(driveShoot2PosBall2Pos, true);
+                    setPathState(PathState.DRIVE_BALL2POS_PICK2POS);
                 }
 
                 break;
             case DRIVE_BALL3POS_PICK3POS:
                 intake.intakeBalls(3);
                 if(!follower.isBusy()){
-                    follower.followPath(driveBall3PosPick3Pos, true);
+                    follower.followPath(driveBall2PosPick2Pos, true);
                     setPathState(PathState.DRIVE_PICK3POS_SHOOT4POS);
                 }
                 break;
@@ -244,7 +227,6 @@ public class BlueSmallTriangle12Ball extends OpMode {
                     follower.followPath(driveShoot4PosEndPos, true);
                     telemetry.addLine("Done Autonomous");
                 }
-                break;
             default:
                 telemetry.addLine("No State Commanded");
                 break;
@@ -271,7 +253,7 @@ public class BlueSmallTriangle12Ball extends OpMode {
         intake.init(hardwareMap);
         buildPaths();
         follower.setPose(startPose);
-
+        shooter.startLimeLight();
     }
 
     @Override
@@ -306,4 +288,3 @@ public class BlueSmallTriangle12Ball extends OpMode {
 
     }
 }
-
