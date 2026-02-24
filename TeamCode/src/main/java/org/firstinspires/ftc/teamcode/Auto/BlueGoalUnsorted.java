@@ -4,14 +4,11 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous
-public class RedGoalUnsorted extends OpMode {
+public class BlueGoalUnsorted {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -39,18 +36,18 @@ public class RedGoalUnsorted extends OpMode {
         DRIVE_SHOOT3POS_ENDPOS
     }
 
-    PathState pathState;
+    RedGoalUnsorted.PathState pathState;
 
-    private final Pose startPose = new Pose(123.750013, 123.927644166881, Math.toRadians(216.5));
-    private final Pose shoot1Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(51.5));
-    private final Pose ball1Pose = new Pose(101.01319, 84, Math.toRadians(0));
-    private final Pose pick1Pose = new Pose(125.99344, 84, Math.toRadians(0));
-    private final Pose shoot2Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(51.5));
-    private final Pose ball2Pose = new Pose(99.03292, 61.26978997878086, Math.toRadians(0));
-    private final Pose pick2Pose = new Pose(131.81581, 61.20268438143005, Math.toRadians(0));
-    private final Pose backUp = new Pose(118.81581, 60.80268438143005, Math.toRadians(0));
-    private final Pose shoot3Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(51.5));
-    private final Pose endPose = new Pose(115.66449, 66.63820390196331, Math.toRadians(360));
+    private final Pose startPose = new Pose(20.249987300668725, 123.927644166881, Math.toRadians(323.5));
+    private final Pose shoot1Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(137.5));
+    private final Pose ball1Pose = new Pose(42.9868151470336, 84.5, Math.toRadians(180));
+    private final Pose pick1Pose = new Pose(18.00656702782064, 84.5, Math.toRadians(180));
+    private final Pose shoot2Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(137.5));
+    private final Pose ball2Pose = new Pose(44.96708019868828, 60.26978997878086, Math.toRadians(180));
+    private final Pose pick2Pose = new Pose(12.18419849537037, 60.20268438143005, Math.toRadians(180));
+    private final Pose backUp = new Pose(25.18419849537037, 60.80268438143005, Math.toRadians(180));
+    private final Pose shoot3Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(138));
+    private final Pose endPose = new Pose(28.33551105431242, 66.63820390196331, Math.toRadians(180));
 
 
 
@@ -101,7 +98,7 @@ public class RedGoalUnsorted extends OpMode {
                 shooter.getID();
                 shooter.spinUp(true);
                 follower.followPath(driveStartPosShoot1Pos, true);
-                setPathState(PathState.SHOOT_PRELOAD1);
+                setPathState(RedGoalUnsorted.PathState.SHOOT_PRELOAD1);
                 break;
             case SHOOT_PRELOAD1:
                 if (!follower.isBusy()) {
@@ -111,14 +108,14 @@ public class RedGoalUnsorted extends OpMode {
                     }
                     else if (shotsTriggered && !shooter.isBusy()) {
                         shotsTriggered = false;
-                        setPathState(PathState.DRIVE_SHOOT1POS_BALL1POS);
+                        setPathState(RedGoalUnsorted.PathState.DRIVE_SHOOT1POS_BALL1POS);
                     }
                 }
                 break;
             case DRIVE_SHOOT1POS_BALL1POS:
                 if(!follower.isBusy()){
                     follower.followPath(driveShoot1PosBall1Pos, true);
-                    setPathState(PathState.DRIVE_BALL1POS_PICK1POS);
+                    setPathState(RedGoalUnsorted.PathState.DRIVE_BALL1POS_PICK1POS);
                 }
 
                 break;
@@ -126,13 +123,13 @@ public class RedGoalUnsorted extends OpMode {
                 intake.intakeBalls(3);
                 if(!follower.isBusy()){
                     follower.followPath(driveBall1PosPick1Pos, true);
-                    setPathState(PathState.DRIVE_PICK1POS_SHOOT2POS);
+                    setPathState(RedGoalUnsorted.PathState.DRIVE_PICK1POS_SHOOT2POS);
                 }
                 break;
             case DRIVE_PICK1POS_SHOOT2POS:
                 if(!follower.isBusy()){
                     follower.followPath(drivePick1PosShoot2Pos, true);
-                    setPathState(PathState.SHOOT_PRELOAD2);
+                    setPathState(RedGoalUnsorted.PathState.SHOOT_PRELOAD2);
                 }
 
                 break;
@@ -144,14 +141,14 @@ public class RedGoalUnsorted extends OpMode {
                     }
                     else if (shotsTriggered && !shooter.isBusy()) {
 
-                        setPathState(PathState.DRIVE_SHOOT2POS_BALL2POS);
+                        setPathState(RedGoalUnsorted.PathState.DRIVE_SHOOT2POS_BALL2POS);
                     }
                 }
                 break;
             case DRIVE_SHOOT2POS_BALL2POS:
                 if(!follower.isBusy()){
                     follower.followPath(driveShoot2PosBall2Pos, true);
-                    setPathState(PathState.DRIVE_BALL2POS_PICK2POS);
+                    setPathState(RedGoalUnsorted.PathState.DRIVE_BALL2POS_PICK2POS);
                 }
 
                 break;
@@ -159,13 +156,13 @@ public class RedGoalUnsorted extends OpMode {
                 intake.intakeBalls(3);
                 if(!follower.isBusy()){
                     follower.followPath(driveBall2PosPick2Pos, true);
-                    setPathState(PathState.DRIVE_PICK2POS_BACK_UP);
+                    setPathState(RedGoalUnsorted.PathState.DRIVE_PICK2POS_BACK_UP);
                 }
                 break;
             case DRIVE_PICK2POS_BACK_UP:
                 if(!follower.isBusy()){
                     follower.followPath(drivePick2PosBackUp, true);
-                    setPathState(PathState.BACK_UP_SHOOT3POS);
+                    setPathState(RedGoalUnsorted.PathState.BACK_UP_SHOOT3POS);
                 }
 
                 break;
@@ -173,7 +170,7 @@ public class RedGoalUnsorted extends OpMode {
             case BACK_UP_SHOOT3POS:
                 if(!follower.isBusy()){
                     follower.followPath(backUpShoot3Pos, true);
-                    setPathState(PathState.SHOOT_PRELOAD3);
+                    setPathState(RedGoalUnsorted.PathState.SHOOT_PRELOAD3);
                 }
 
                 break;
@@ -184,7 +181,7 @@ public class RedGoalUnsorted extends OpMode {
                         shotsTriggered = true;
                     }
                     else if (shotsTriggered && !shooter.isBusy()) {
-                        setPathState(PathState.DRIVE_SHOOT3POS_ENDPOS);
+                        setPathState(RedGoalUnsorted.PathState.DRIVE_SHOOT3POS_ENDPOS);
                     }
                 }
                 break;
@@ -199,7 +196,7 @@ public class RedGoalUnsorted extends OpMode {
         }
     }
 
-    public void setPathState(PathState newState) {
+    public void setPathState(RedGoalUnsorted.PathState newState) {
         pathState = newState;
         pathTimer.resetTimer();
 
@@ -209,7 +206,7 @@ public class RedGoalUnsorted extends OpMode {
 
     @Override
     public void init(){
-        pathState = PathState.DRIVE_STARTPOS_SHOOT1POS;
+        pathState = RedGoalUnsorted.PathState.DRIVE_STARTPOS_SHOOT1POS;
         pathTimer = new Timer();
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
