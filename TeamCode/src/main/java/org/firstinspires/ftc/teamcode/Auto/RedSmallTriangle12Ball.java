@@ -11,12 +11,12 @@ import com.pedropathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class RedGoal extends OpMode {
+public class RedSmallTriangle12Ball extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
-    private FlywheelLogic shooter = new FlywheelLogic();
-    private IntakeLogic intake = new IntakeLogic();
+    private FlywheelLogicNotSortedST shooter = new FlywheelLogicNotSortedST();
+    private IntakeLogicNotSorted intake = new IntakeLogicNotSorted();
 
     private boolean shotsTriggered = false;
     private boolean intakeTriggered = false;
@@ -33,28 +33,34 @@ public class RedGoal extends OpMode {
         SHOOT_PRELOAD2,
         DRIVE_SHOOT2POS_BALL2POS,
         DRIVE_BALL2POS_PICK2POS,
-        DRIVE_PICK2POS_BACK_UP,
-        BACK_UP_SHOOT3POS,
+        DRIVE_PICK2POS_SHOOT3POS,
         SHOOT_PRELOAD3,
-        DRIVE_SHOOT3POS_ENDPOS
+        DRIVE_SHOOT3POS_BALL3POS,
+        DRIVE_BALL3POS_PICK3POS,
+        DRIVE_PICK3POS_SHOOT4POS,
+        SHOOT_PRELOAD4,
+        DRIVE_SHOOT4POS_ENDPOS
     }
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(123.750013, 123.927644166881, Math.toRadians(216.5));
-    private final Pose shoot1Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(51.5));
-    private final Pose ball1Pose = new Pose(101.01319, 84, Math.toRadians(0));
-    private final Pose pick1Pose = new Pose(125.99344, 84, Math.toRadians(0));
-    private final Pose shoot2Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(51.5));
-    private final Pose ball2Pose = new Pose(99.03292, 61.26978997878086, Math.toRadians(0));
-    private final Pose pick2Pose = new Pose(131.81581, 61.20268438143005, Math.toRadians(0));
-    private final Pose backUp = new Pose(118.81581, 60.80268438143005, Math.toRadians(0));
-    private final Pose shoot3Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(51.5));
-    private final Pose endPose = new Pose(115.66449, 66.63820390196331, Math.toRadians(360));
+    private final Pose startPose = new Pose(88.0025, 8.177777777777768, Math.toRadians(90));
+    private final Pose shoot1Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
+    private final Pose ball1Pose = new Pose(96.13459, 35.727930535455855, Math.toRadians(0));
+    private final Pose pick1Pose = new Pose(128.26339, 35.71635311143271, Math.toRadians(0));
+    private final Pose shoot2Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
+    private final Pose ball2Pose = new Pose(99.03292, 59.76978997878086, Math.toRadians(0));
+    private final Pose pick2Pose = new Pose(131.81581, 59.70268438143005, Math.toRadians(0));
+    private final Pose shoot3Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
+    private final Pose ball3Pose = new Pose(98.01319, 84, Math.toRadians(0));
+    private final Pose pick3Pose = new Pose(124.99344, 84, Math.toRadians(0));
+    private final Pose shoot4Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
+    private final Pose endPose = new Pose(98.59783, 24.37153723529663, Math.toRadians(90));
 
 
 
-    private PathChain driveStartPosShoot1Pos, driveShoot1PosBall1Pos, driveBall1PosPick1Pos, drivePick1PosShoot2Pos, driveShoot2PosBall2Pos, driveBall2PosPick2Pos, drivePick2PosBackUp, backUpShoot3Pos, driveShoot3PosEndPos;
+
+    private PathChain driveStartPosShoot1Pos, driveShoot1PosBall1Pos, driveBall1PosPick1Pos, drivePick1PosShoot2Pos, driveShoot2PosBall2Pos, driveBall2PosPick2Pos, drivePick2PosShoot3Pos, driveShoot3PosBall3Pos, driveBall3PosPick3Pos, drivePick3PosShoot4Pos, driveShoot4PosEndPos;
 
     public void buildPaths() {
         driveStartPosShoot1Pos = follower.pathBuilder()
@@ -81,24 +87,32 @@ public class RedGoal extends OpMode {
                 .addPath(new BezierLine(ball2Pose, pick2Pose))
                 .setLinearHeadingInterpolation(ball2Pose.getHeading(), pick2Pose.getHeading())
                 .build();
-        drivePick2PosBackUp = follower.pathBuilder()
-                .addPath(new BezierLine(pick2Pose, backUp))
-                .setLinearHeadingInterpolation(pick2Pose.getHeading(), backUp.getHeading())
+        drivePick2PosShoot3Pos = follower.pathBuilder()
+                .addPath(new BezierLine(pick2Pose, shoot3Pose))
+                .setLinearHeadingInterpolation(pick2Pose.getHeading(), shoot3Pose.getHeading())
                 .build();
-        backUpShoot3Pos = follower.pathBuilder()
-                .addPath(new BezierLine(backUp, shoot3Pose))
-                .setLinearHeadingInterpolation(backUp.getHeading(), shoot3Pose.getHeading())
+        driveShoot3PosBall3Pos = follower.pathBuilder()
+                .addPath(new BezierLine(shoot3Pose, ball3Pose))
+                .setLinearHeadingInterpolation(shoot3Pose.getHeading(), ball3Pose.getHeading())
                 .build();
-        driveShoot3PosEndPos = follower.pathBuilder()
-                .addPath(new BezierLine(shoot3Pose, endPose))
-                .setLinearHeadingInterpolation(shoot3Pose.getHeading(), endPose.getHeading())
+        driveBall3PosPick3Pos = follower.pathBuilder()
+                .addPath(new BezierLine(ball3Pose, pick3Pose))
+                .setLinearHeadingInterpolation(ball3Pose.getHeading(), pick3Pose.getHeading())
+                .build();
+        drivePick3PosShoot4Pos = follower.pathBuilder()
+                .addPath(new BezierLine(pick3Pose, shoot4Pose))
+                .setLinearHeadingInterpolation(pick3Pose.getHeading(), shoot4Pose.getHeading())
+                .build();
+        driveShoot4PosEndPos = follower.pathBuilder()
+                .addPath(new BezierLine(shoot4Pose, endPose))
+                .setLinearHeadingInterpolation(shoot4Pose.getHeading(), endPose.getHeading())
                 .build();
     }
 
     public void statePathUpdate() {
         switch(pathState) {
             case DRIVE_STARTPOS_SHOOT1POS:
-                shooter.getID();
+
                 shooter.spinUp(true);
                 follower.followPath(driveStartPosShoot1Pos, true);
                 setPathState(PathState.SHOOT_PRELOAD1);
@@ -159,23 +173,14 @@ public class RedGoal extends OpMode {
                 intake.intakeBalls(3);
                 if(!follower.isBusy()){
                     follower.followPath(driveBall2PosPick2Pos, true);
-                    setPathState(PathState.DRIVE_PICK2POS_BACK_UP);
+                    setPathState(PathState.DRIVE_PICK2POS_SHOOT3POS);
                 }
                 break;
-            case DRIVE_PICK2POS_BACK_UP:
+            case DRIVE_PICK2POS_SHOOT3POS:
                 if(!follower.isBusy()){
-                    follower.followPath(drivePick2PosBackUp, true);
-                    setPathState(PathState.BACK_UP_SHOOT3POS);
-                }
-
-                break;
-
-            case BACK_UP_SHOOT3POS:
-                if(!follower.isBusy()){
-                    follower.followPath(backUpShoot3Pos, true);
+                    follower.followPath(drivePick2PosShoot3Pos, true);
                     setPathState(PathState.SHOOT_PRELOAD3);
                 }
-
                 break;
             case SHOOT_PRELOAD3:
                 if (!follower.isBusy()&& !intake.isStillGoing()) {
@@ -184,15 +189,47 @@ public class RedGoal extends OpMode {
                         shotsTriggered = true;
                     }
                     else if (shotsTriggered && !shooter.isBusy()) {
-                        setPathState(PathState.DRIVE_SHOOT3POS_ENDPOS);
+                        setPathState(PathState.DRIVE_SHOOT3POS_BALL3POS);
                     }
                 }
                 break;
-            case DRIVE_SHOOT3POS_ENDPOS:
+            case DRIVE_SHOOT3POS_BALL3POS:
                 if(!follower.isBusy()){
-                    follower.followPath(driveShoot3PosEndPos, true);
+                    follower.followPath(driveShoot3PosBall3Pos, true);
+                    setPathState(PathState.DRIVE_BALL3POS_PICK3POS);
+                }
+
+                break;
+            case DRIVE_BALL3POS_PICK3POS:
+                intake.intakeBalls(3);
+                if(!follower.isBusy()){
+                    follower.followPath(driveBall3PosPick3Pos, true);
+                    setPathState(PathState.DRIVE_PICK3POS_SHOOT4POS);
+                }
+                break;
+            case DRIVE_PICK3POS_SHOOT4POS:
+                if(!follower.isBusy()){
+                    follower.followPath(drivePick3PosShoot4Pos, true);
+                    setPathState(PathState.SHOOT_PRELOAD4);
+                }
+                break;
+            case SHOOT_PRELOAD4:
+                if (!follower.isBusy()&& !intake.isStillGoing()) {
+                    if (!shotsTriggered) {
+                        shooter.fireShots(3);
+                        shotsTriggered = true;
+                    }
+                    else if (shotsTriggered && !shooter.isBusy()) {
+                        setPathState(PathState.DRIVE_SHOOT4POS_ENDPOS);
+                    }
+                }
+                break;
+            case DRIVE_SHOOT4POS_ENDPOS:
+                if(!follower.isBusy()){
+                    follower.followPath(driveShoot4PosEndPos, true);
                     telemetry.addLine("Done Autonomous");
                 }
+                break;
             default:
                 telemetry.addLine("No State Commanded");
                 break;
@@ -219,7 +256,7 @@ public class RedGoal extends OpMode {
         intake.init(hardwareMap);
         buildPaths();
         follower.setPose(startPose);
-        shooter.startLimeLight();
+
     }
 
     @Override
@@ -254,4 +291,5 @@ public class RedGoal extends OpMode {
 
     }
 }
+
 

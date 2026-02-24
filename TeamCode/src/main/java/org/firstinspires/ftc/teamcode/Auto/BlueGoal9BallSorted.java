@@ -11,7 +11,7 @@ import com.pedropathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class BlueGoal extends OpMode {
+public class BlueGoal9BallSorted extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -42,14 +42,14 @@ public class BlueGoal extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(20.249987300668725, 123.927644166881, Math.toRadians(323.5));
-    private final Pose shoot1Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(138.5));
-    private final Pose ball1Pose = new Pose(42.9868151470336, 84, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(18.00656702782064, 84, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(138.5));
+    private final Pose shoot1Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(137.5));
+    private final Pose ball1Pose = new Pose(42.9868151470336, 84.5, Math.toRadians(180));
+    private final Pose pick1Pose = new Pose(18.00656702782064, 84.5, Math.toRadians(180));
+    private final Pose shoot2Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(137.5));
     private final Pose ball2Pose = new Pose(44.96708019868828, 60.26978997878086, Math.toRadians(180));
     private final Pose pick2Pose = new Pose(12.18419849537037, 60.20268438143005, Math.toRadians(180));
     private final Pose backUp = new Pose(25.18419849537037, 60.80268438143005, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(138.5));
+    private final Pose shoot3Pose = new Pose(47.84192888060535, 95.8023690459329, Math.toRadians(138));
     private final Pose endPose = new Pose(28.33551105431242, 66.63820390196331, Math.toRadians(180));
 
 
@@ -193,6 +193,7 @@ public class BlueGoal extends OpMode {
                     follower.followPath(driveShoot3PosEndPos, true);
                     telemetry.addLine("Done Autonomous");
                 }
+                break;
             default:
                 telemetry.addLine("No State Commanded");
                 break;

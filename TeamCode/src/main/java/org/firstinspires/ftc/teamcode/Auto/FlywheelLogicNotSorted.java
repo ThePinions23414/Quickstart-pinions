@@ -1,0 +1,165 @@
+package org.firstinspires.ftc.teamcode.Auto;
+
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import java.util.List;
+
+public class FlywheelLogicNotSorted {
+    private DcMotorEx shooter;
+    private CRServo upperRoller;
+    private CRServo lowerRoller;
+    private CRServo lLifter;
+    private CRServo rLifter;
+    private Servo turret;
+    private Servo gate;
+    private Servo leftHood;
+    private Servo rightHood;
+    private Servo spindexer;
+    private DcMotor intake;
+    private Limelight3A limelight;
+    private ElapsedTime stateTimer = new ElapsedTime();
+    private  ElapsedTime shootTimer = new ElapsedTime();
+    private Servo light1;
+    private Servo light2;
+    private enum FlywheelState {
+        IDLE,
+        SPIN_UP,
+        LAUNCH;
+    }
+    private FlywheelState flywheelState;
+
+    private int shotsRemaining = 0;
+    private int shotNumber = 1;
+    private double flywheelVelocity = 0;
+    private double MIN_FLYWHEEL_RPM = 1050;
+    private double TARGET_FLYWHEEL_RPM = 1110;
+    private double FLYWHEEL_MAX_SPINUP_TIME = 3;
+    double P = 100;
+    double F = 13.0604;
+    boolean spinningUp = false;
+
+
+    private String pattern = "";
+    double slot1Position = 0.185;
+    double slot2Position = 0.255;
+    double slot3Position = 0.335;
+    double turretPosition = 0.065;
+    double lHoodPosition = 0.95;
+    double rHoodPosition = 0.05;
+
+
+
+    public void init(HardwareMap hwMap) {
+        leftHood = hwMap.get(Servo.class, "leftHood");
+        rightHood = hwMap.get(Servo.class, "rightHood");
+        upperRoller = hwMap.get(CRServo.class, "upperRoller");
+        lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
+        lLifter = hwMap.get(CRServo.class, "leftLifter");
+        rLifter = hwMap.get(CRServo.class, "rightLifter");
+        turret = hwMap.get(Servo.class, "turret");
+        gate = hwMap.get(Servo.class, "gate");
+        shooter = hwMap.get(DcMotorEx.class, "shooter");
+        spindexer = hwMap.get(Servo.class, "spindexer");
+        intake = hwMap.get(DcMotor.class, "intake");
+        limelight = hwMap.get(Limelight3A.class, "limelight");
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
+        shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        flywheelState = FlywheelState.IDLE;
+
+        shooter.setVelocity(0);
+        spindexer.setPosition(slot1Position);
+        leftHood.setPosition(lHoodPosition);
+        rightHood.setPosition(rHoodPosition);
+
+
+
+    }
+
+
+
+
+    public void update() {
+        switch (flywheelState) {
+            case IDLE:
+                gate.setPosition(0.7);
+                if (spinningUp) {
+
+                    stateTimer.reset();
+                    flywheelState = FlywheelState.SPIN_UP;
+                }
+                break;
+            case SPIN_UP:
+                shooter.setVelocity(TARGET_FLYWHEEL_RPM);
+                gate.setPosition(0.7);
+                turret.setPosition(turretPosition);
+                lowerRoller.setPower(1);
+                upperRoller.setPower(0);
+                if(shotsRemaining > 0){
+                    stateTimer.reset();
+                    shootTimer.reset();
+                    flywheelState = FlywheelState.LAUNCH;
+                }
+
+                break;
+            case LAUNCH:
+                if (shooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
+
+                    gate.setPosition(0.2);
+
+                    lowerRoller.setPower(1);
+                    lLifter.setPower(1);
+                    rLifter.setPower(-1);
+                    intake.setPower(1);
+
+                    if (shootTimer.seconds() > 3.75 && shotNumber == 1){
+                        upperRoller.setPower(0);
+                        shotsRemaining = 0;
+                        shotNumber = 2;
+                        flywheelState = FlywheelState.SPIN_UP;
+                    } else if (shootTimer.seconds() > 3 && shotNumber == 2) {
+                        upperRoller.setPower(0);
+                        shotsRemaining = 0;
+                        flywheelState = FlywheelState.SPIN_UP;
+                    }else{
+                        upperRoller.setPower(1);
+                    }
+                }
+
+                break;
+
+
+        }
+    }
+
+
+    public void fireShots(int numberOfShots) {
+        if (flywheelState == FlywheelState.SPIN_UP) {
+            shotsRemaining = numberOfShots;
+        }
+    }
+    public void spinUp(boolean readyToFly) {
+        if (flywheelState == FlywheelState.IDLE) {
+            spinningUp = readyToFly;
+        }
+    }
+
+
+    public boolean isBusy() {
+        return flywheelState != FlywheelState.SPIN_UP;
+    }
+}

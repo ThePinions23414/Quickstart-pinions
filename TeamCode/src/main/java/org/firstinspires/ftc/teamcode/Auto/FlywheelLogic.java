@@ -39,19 +39,20 @@ public class FlywheelLogic {
     private int shotsRemaining = 0;
     private int shotNumber = 1;
     private double flywheelVelocity = 0;
-    private double MIN_FLYWHEEL_RPM = 1125;
-    private double TARGET_FLYWHEEL_RPM = 1175;
+    private double MIN_FLYWHEEL_RPM = 1050;
+    private double TARGET_FLYWHEEL_RPM = 1100;
     private double FLYWHEEL_MAX_SPINUP_TIME = 3;
     double P = 100;
     double F = 13.0604;
     boolean spinningUp = false;
 
 
+
     private String pattern = "";
     double slot1Position = 0.185;
     double slot2Position = 0.255;
     double slot3Position = 0.335;
-    double turretPosition = 0.045;
+    double turretPosition = 0.065;
     double lHoodPosition = 0.95;
     double rHoodPosition = 0.05;
 
@@ -222,14 +223,14 @@ public class FlywheelLogic {
             case LAUNCH:
 
 
-                if (TARGET_FLYWHEEL_RPM > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
+                if (shooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
 
                     gate.setPosition(0.2);
 
                     lowerRoller.setPower(1);
 
 
-                    if (shootTimer.seconds() > 1.25){
+                    if (shootTimer.seconds() > 1.4){
 
                         upperRoller.setPower(0);
                         shotsRemaining--;

@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -70,7 +69,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         String slot3Color = "empty";
         String colorShot = "none";
         boolean spindexerOn = false;
-        boolean someoneTurnedOffSpindexer = false;
+        boolean someoneTurnedOffMySpindexer = false;
         boolean touchSensorPressed = false;
         boolean override = false;
         boolean thirdBall = false;
@@ -156,7 +155,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
         spindexer.setPosition(slot1Position);
         gate.setPosition(0.7);
-        turret.setPosition(0.07);
+        turret.setPosition(0.065);
         lowerRoller.setPower(1);
 
 
@@ -211,7 +210,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
 
-//            if (spindexerTimer.seconds() > 75 && !someoneTurnedOffSpindexer) {
+//            if (spindexerTimer.seconds() > 75 && !someoneTurnedOffMySpindexer) {
 //                spindexerOn = true;
 //            }
             if(rumbleTimer.seconds() > 75 && rumbleTimer.seconds() < 77){
@@ -576,37 +575,37 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 //                        rHood.setPosition(0.085);
 //                    }
                     if (result.getTa() < 3.5 && result.getTa() > 2.9) {
-                        velocity = 1100;
+                        velocity = 1050;
                         P = 100;
                         F = 13.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     } else if (result.getTa() < 2.9 && result.getTa() > 2.5) {
-                        velocity = 1125;
+                        velocity = 1050;
                         P = 100;
                         F = 12.7;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     }else if (result.getTa() < 2.5 && result.getTa() > 2) {
-                        velocity = 1175;
+                        velocity = 1075;
                         P = 100;
                         F = 12.46;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     } else if (result.getTa() < 2 && result.getTa() > 1.5) {
-                        velocity = 1225;
+                        velocity = 1100;
                         P = 100;
                         F = 12.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     }else if (result.getTa() < 1.5 && result.getTa() > 1) {
-                        velocity = 1300;
+                        velocity = 1200;
                         P = 120;
                         F = 12.6;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 1 && result.getTa() > 0.8) {
-                        velocity = 1350;
+                        velocity = 1250;
                         P = 120;
                         F = 12.68;
                         lHood.setPosition(0.925);
@@ -618,31 +617,31 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 0.6 && result.getTa() > 0.43) {
-                        velocity = 1450;
+                        velocity = 1425;
                         P = 120;
                         F = 12.1;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 0.43 && result.getTa() > 0.38) {
-                        velocity = 1550;
+                        velocity = 1450;
                         P = 140;
                         F = 11.8;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     } else if (result.getTa() < 0.38 && result.getTa() > 0.33) {
-                        velocity = 1600;
+                        velocity = 1475;
                         P = 140;
                         F = 12.3;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     } else if (result.getTa() < 0.33 && result.getTa() > 0.28) {
-                        velocity = 1650;
+                        velocity = 1525;
                         P = 140;
                         F = 12.6;
                         lHood.setPosition(0.915);
                         rHood.setPosition(0.085);
                     } else if (result.getTa() < 0.28 && result.getTa() > 0.23) {
-                        velocity = 1700;
+                        velocity = 1575;
                         P = 140;
                         F = 13;
                         lHood.setPosition(0.915);
@@ -660,7 +659,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
 
             if (result.getTa() == 0 && iDoNotSeeTheSignTimer.seconds() > 1) {
-                velocity = 1100;
+                velocity = 1050;
                 P = 100;
                 F = 13.51;
                 lHood.setPosition(0.95);
@@ -679,12 +678,12 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
             if (gamepad2.y && !override) {
-                someoneTurnedOffSpindexer = false;
+                someoneTurnedOffMySpindexer = false;
                 spindexerOn = true;
             }
 
             if (gamepad2.a && !override) {
-                someoneTurnedOffSpindexer = true;
+                someoneTurnedOffMySpindexer = true;
                 spindexerOn = false;
             }
 
@@ -739,7 +738,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
             if(gamepad2.dpad_down && override){
                 velocity = 1175;
-                P = 50;
+                P = 100;
                 F = 12.46;
                 lHood.setPosition(0.95);
                 rHood.setPosition(0.05);
@@ -747,7 +746,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
             if(gamepad2.dpad_up && override){
                 velocity = 1600;
-                P = 52;
+                P = 140;
                 F = 11.7;
                 lHood.setPosition(0.915);
                 rHood.setPosition(0.085);

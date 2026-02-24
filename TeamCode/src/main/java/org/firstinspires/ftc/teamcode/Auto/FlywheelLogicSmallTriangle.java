@@ -40,9 +40,9 @@ public class FlywheelLogicSmallTriangle {
     private int shotsRemaining = 0;
     private int shotNumber = 1;
     private double flywheelVelocity = 0;
-    private double MIN_FLYWHEEL_RPM = 1400;
-    private double TARGET_FLYWHEEL_RPM = 1550;
-    private double FLYWHEEL_MAX_SPINUP_TIME = 3;
+    private double MIN_FLYWHEEL_RPM = 1375;
+    private double TARGET_FLYWHEEL_RPM = 1475;
+    private double FLYWHEEL_MAX_SPINUP_TIME = 2.75;
     double P = 140;
     double F = 14.04;
 
@@ -53,7 +53,7 @@ public class FlywheelLogicSmallTriangle {
     double slot1Position = 0.185;
     double slot2Position = 0.255;
     double slot3Position = 0.335;
-    double turretPosition = 0.045;
+    double turretPosition = 0.065;
     double lHoodPosition = 0.915;
     double rHoodPosition = 0.085;
 

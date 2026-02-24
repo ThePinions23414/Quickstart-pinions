@@ -47,14 +47,14 @@ public class EIGHT_RedSmallTriangle extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(80.35, 8.177777777777768, Math.toRadians(90));
-    private final Pose shoot1Pose = new Pose(84.5, 12.177777777777763, Math.toRadians(64));
+    private final Pose shoot1Pose = new Pose(84.5, 12.177777777777763, Math.toRadians(68));
     private final Pose ball1Pose = new Pose(99.5, 35.37777777777776, Math.toRadians(0));
-    private final Pose pick1Pose = new Pose(135.73, 35.688888888888876, Math.toRadians(0));
-    private final Pose shoot2Pose = new Pose(84.5, 12.177777777777763, Math.toRadians(64));
+    private final Pose pick1Pose = new Pose(131.73, 35.688888888888876, Math.toRadians(0));
+    private final Pose shoot2Pose = new Pose(84.5, 12.177777777777763, Math.toRadians(66));
     private final Pose ball2Pose = new Pose(130.73, 16.488888888888887, Math.toRadians(345));
     private final Pose ball2Pose2 = new Pose(122, 16.333333333333334, Math.toRadians(345));
     private final Pose ball2Pose3 = new Pose(131, 11.955555555555568, Math.toRadians(340));
-    private final Pose shoot3Pose = new Pose(84.5, 12.177777777777763, Math.toRadians(64));
+    private final Pose shoot3Pose = new Pose(84.5, 12.177777777777763, Math.toRadians(68));
     private final Pose endPose = new Pose(98.6, 24.37153723529663, Math.toRadians(90));
 
 
@@ -222,6 +222,7 @@ public class EIGHT_RedSmallTriangle extends OpMode {
                     follower.followPath(driveShoot3PosEndPos, true);
                     telemetry.addLine("Done Autonomous");
                 }
+                break;
             default:
                 telemetry.addLine("No State Commanded");
                 break;
