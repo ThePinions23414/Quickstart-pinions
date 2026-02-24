@@ -53,7 +53,7 @@ public class RedFarTwelveBall extends OpMode {
     private final Pose pick2Pose = new Pose(135, 60, Math.toRadians(0));
     private final Pose shoot3Pose = new Pose(88, 12, Math.toRadians(70));
     private final Pose ball3Pose = new Pose(88, 84, Math.toRadians(0));
-    private final Pose pick3Pose = new Pose(135, 84, Math.toRadians(0));
+    private final Pose pick3Pose = new Pose(129, 84, Math.toRadians(0));
     private final Pose shoot4Pose = new Pose(88, 12, Math.toRadians(70));
     private final Pose endPose = new Pose(114, 20, Math.toRadians(180));
 

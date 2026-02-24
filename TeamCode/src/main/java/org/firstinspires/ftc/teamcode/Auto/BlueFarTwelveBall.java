@@ -53,7 +53,7 @@ public class BlueFarTwelveBall extends OpMode {
     private final Pose pick2Pose = new Pose(9, 60, Math.toRadians(180));
     private final Pose shoot3Pose = new Pose(56, 12, Math.toRadians(110));
     private final Pose ball3Pose = new Pose(56, 84, Math.toRadians(180));
-    private final Pose pick3Pose = new Pose(9, 84, Math.toRadians(180));
+    private final Pose pick3Pose = new Pose(16, 84, Math.toRadians(180));
     private final Pose shoot4Pose = new Pose(56, 12, Math.toRadians(110));
     private final Pose endPose = new Pose(30, 20, Math.toRadians(0));
 
