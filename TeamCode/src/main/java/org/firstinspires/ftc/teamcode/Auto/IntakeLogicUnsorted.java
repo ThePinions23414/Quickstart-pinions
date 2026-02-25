@@ -25,7 +25,7 @@ public class IntakeLogicUnsorted {
     private enum IntakeStateUnsorted {
         IDLENOSORT,
         INTAKENOSORT,
-        HOLDNOSORT;
+
 
     }
     private IntakeLogicUnsorted.IntakeStateUnsorted intakeState;
@@ -51,11 +51,11 @@ public class IntakeLogicUnsorted {
         switch (intakeState) {
             case IDLENOSORT:
 
-                if (ballsRemaining == 0) {
+                if (ballsRemaining > 0) {
                     spindexer.setPosition(slot1Position);
                     stateTimer.reset();
                     intakeTimer.reset();
-                    intakeState = IntakeLogicUnsorted.IntakeStateUnsorted.INTAKENOSORT;
+                    intakeState = IntakeStateUnsorted.INTAKENOSORT;
                 }
                 break;
             case INTAKENOSORT:
@@ -70,7 +70,8 @@ public class IntakeLogicUnsorted {
                         lLifter.setPower(0);
                         rLifter.setPower(0);
                         stateTimer.reset();
-                        intakeState = IntakeLogicUnsorted.IntakeStateUnsorted.HOLDNOSORT;
+                        ballsRemaining = 0;
+                        intakeState = IntakeStateUnsorted.IDLENOSORT;
                     }
                 } else if (ballPickUpNumber == 2) {
                     intake.setPower(1);
@@ -81,37 +82,11 @@ public class IntakeLogicUnsorted {
                         lLifter.setPower(0);
                         rLifter.setPower(0);
                         stateTimer.reset();
-                        intakeState = IntakeLogicUnsorted.IntakeStateUnsorted.HOLDNOSORT;
-                    }
-                }
-
-
-                break;
-            case HOLDNOSORT:
-                if (ballsRemaining == 1) {
-                    if (stateTimer.seconds() > 0.7) {
-                        spindexer.setPosition(slot1Position);
-                        ballsRemaining -= 1;
-
-                    }
-                } else if (ballsRemaining == 1) {
-                        if (stateTimer.seconds() > 0.7) {
-                            spindexer.setPosition(slot1Position);
-                            ballsRemaining -= 1;
-
-                        }
-                } else if (ballsRemaining == 3) {
-                    if (stateTimer.seconds() > 0.5) {
-                        lLifter.setPower(1);
-                        rLifter.setPower(-1);
-                        if (stateTimer.seconds() > 2) {
-                            spindexer.setPosition(slot1Position);
-                            ballsRemaining--;
-                        }
+                        ballsRemaining = 0;
+                        intakeState = IntakeStateUnsorted.IDLENOSORT;
                     }
                 }
                 break;
-
         }
     }
 

@@ -5,10 +5,11 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-public class BlueGoalUnsorted {
+public class BlueGoalUnsorted extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
