@@ -215,6 +215,8 @@ public class RedGoal9BallSorted extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
 
+        shooter.setTurretDirection("left");
+
 
         shooter.init(hardwareMap);
         intake.init(hardwareMap);

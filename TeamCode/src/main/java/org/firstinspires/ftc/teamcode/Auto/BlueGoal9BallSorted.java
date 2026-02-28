@@ -215,6 +215,8 @@ public class BlueGoal9BallSorted extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
 
+        shooter.setTurretDirection("right");
+
 
         shooter.init(hardwareMap);
         intake.init(hardwareMap);

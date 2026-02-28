@@ -15,10 +15,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.List;
 
 public class FlywheelLogicSmallTriangle {
-    private DcMotorEx shooter;
+    private DcMotorEx lShooter;
+    private DcMotorEx rShooter;
     private CRServo upperRoller;
     private CRServo lowerRoller;
-    private Servo turret;
+    private DcMotorEx turret;
     private Servo gate;
     private Servo leftHood;
     private Servo rightHood;
@@ -50,10 +51,10 @@ public class FlywheelLogicSmallTriangle {
     boolean spinningUp = false;
 
 
-    double slot1Position = 0.185;
-    double slot2Position = 0.255;
-    double slot3Position = 0.335;
-    double turretPosition = 0.065;
+    double slot1Position = 0.32;
+    double slot2Position = 0.39;
+    double slot3Position = 0.465;
+    double turretPosition = 0;
     double lHoodPosition = 0.915;
     double rHoodPosition = 0.085;
 
@@ -66,21 +67,29 @@ public class FlywheelLogicSmallTriangle {
         rightHood = hwMap.get(Servo.class, "rightHood");
         upperRoller = hwMap.get(CRServo.class, "upperRoller");
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
-        turret = hwMap.get(Servo.class, "turret");
+        turret = hwMap.get(DcMotorEx.class, "turret");
         gate = hwMap.get(Servo.class, "gate");
         light = hwMap.get(Servo.class, "light1");
-        shooter = hwMap.get(DcMotorEx.class, "shooter");
+        lShooter = hwMap.get(DcMotorEx.class, "leftShooter");
+        rShooter = hwMap.get(DcMotorEx.class, "rightShooter");
         spindexer = hwMap.get(Servo.class, "spindexer");
         limelight = hwMap.get(Limelight3A.class, "limelight");
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        lShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rShooter.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
-        shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        lShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        rShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         flywheelState = FlywheelState.IDLE;
 
-        shooter.setVelocity(0);
+        lShooter.setVelocity(0);
+        rShooter.setVelocity(0);
         spindexer.setPosition(slot1Position);
         leftHood.setPosition(lHoodPosition);
         rightHood.setPosition(rHoodPosition);
@@ -127,9 +136,12 @@ public class FlywheelLogicSmallTriangle {
                 }
                 break;
             case SPIN_UP:
-                shooter.setVelocity(TARGET_FLYWHEEL_RPM);
+                lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
+                rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 gate.setPosition(0.7);
-                turret.setPosition(turretPosition);
+                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setTargetPosition(0);
+                turret.setPower(1);
                 lowerRoller.setPower(1);
                 upperRoller.setPower(0);
                 if(shotsRemaining > 0){
@@ -219,7 +231,7 @@ public class FlywheelLogicSmallTriangle {
                     }
                 }
 
-                if(shooter.getVelocity() > MIN_FLYWHEEL_RPM){
+                if(rShooter.getVelocity() > MIN_FLYWHEEL_RPM){
                     stateTimer.reset();
                     shootTimer.reset();
                     flywheelState = FlywheelState.LAUNCH;
@@ -227,7 +239,7 @@ public class FlywheelLogicSmallTriangle {
                 break;
             case LAUNCH:
 
-                if (shooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
+                if (rShooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
 
                         gate.setPosition(0.2);
 

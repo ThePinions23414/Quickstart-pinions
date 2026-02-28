@@ -22,9 +22,9 @@ public class LimeLightClass {
 
     }
 
-    public void startLimeLight(){
+    public void startLimeLight(int pipeline){
         limelight.start();
-        limelight.pipelineSwitch(2);
+        limelight.pipelineSwitch(pipeline);
     }
 
     public LLResult getSpecificId(int targetTagId){

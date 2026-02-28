@@ -21,6 +21,9 @@ import java.util.List;
 @TeleOp(name = "BLUE_Decode_TeleOp")
 public class BLUE_Decode_TeleOp extends LinearOpMode {
     private Limelight3A limelight;
+    LimeLightClass limeLightClass = new LimeLightClass();
+
+    TurretMechanismV2 turretClass = new TurretMechanismV2();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -30,12 +33,13 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         DcMotor fR = hardwareMap.dcMotor.get("frontRight");
         DcMotor bR = hardwareMap.dcMotor.get("backRight");
         DcMotor intake = hardwareMap.dcMotor.get("intake");
-        DcMotorEx shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        DcMotorEx lShooter = hardwareMap.get(DcMotorEx.class, "leftShooter");
+        DcMotorEx rShooter = hardwareMap.get(DcMotorEx.class, "rightShooter");
         CRServo lLifter = hardwareMap.get(CRServo.class, "leftLifter");
         CRServo rLifter = hardwareMap.get(CRServo.class, "rightLifter");
         CRServo lowerRoller = hardwareMap.get(CRServo.class, "lowerRoller");
         CRServo upperRoller = hardwareMap.get(CRServo.class, "upperRoller");
-        Servo turret = hardwareMap.get(Servo.class, "turret");
+        DcMotorEx turret = hardwareMap.get(DcMotorEx.class, "turret");
         Servo spindexer = hardwareMap.get(Servo.class, "spindexer");
         Servo lHood = hardwareMap.get(Servo.class, "leftHood");
         Servo rHood = hardwareMap.get(Servo.class, "rightHood");
@@ -57,9 +61,9 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         double blueValue = 0;
         double velocity = 0;
         double idleVelocity = 300;
-        double slot1Position = 0.185;
-        double slot2Position = 0.255;
-        double slot3Position = 0.335;
+        double slot1Position = 0.32;
+        double slot2Position = 0.39;
+        double slot3Position = 0.465;
         double F = 0;
         double P = 0;
         int ballCount = 0;
@@ -84,9 +88,9 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
 
-
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        lShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rShooter.setDirection(DcMotorSimple.Direction.REVERSE);
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
@@ -113,6 +117,9 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         limitSwitch.init(hardwareMap);
         LEDLights lights = new LEDLights();
         lights.init(hardwareMap);
+        turretClass.init(hardwareMap);
+        limeLightClass.init(hardwareMap);
+        limeLightClass.startLimeLight(2);
 
 //        double[] numbers = {0, 0.2, 0.4, 0.6, 0.8};
 //
@@ -128,8 +135,6 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 //                smallest = (int) numbers[i];
 //
 //            }
-
-        limelight.pipelineSwitch(2);
 
 
         limelight.start();
@@ -150,12 +155,12 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         ball2TravelTimer.reset();
         ball3TravelTimer.reset();
         iDoNotSeeTheSignTimer.reset();
+        turretClass.resetTimer();
 
 
 
         spindexer.setPosition(slot1Position);
         gate.setPosition(0.7);
-        turret.setPosition(0.065);
         lowerRoller.setPower(1);
 
 
@@ -183,7 +188,8 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
             PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
-            shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+            rShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+            lShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
 
             if (rumbleTimer.seconds() > 110 && rumbleTimer.seconds() < 119) {
@@ -400,6 +406,18 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
 
+            turretClass.setGoalXOffset(2);
+            LLResult id20 = limeLightClass.getSpecificId(20);
+            turretClass.update(id20);
+
+
+            turretClass.setkP(0.0601);
+            turretClass.setkD(0.00001);
+
+            if (id20 != null){
+                telemetry.addLine("I saw the sign");
+            }
+
 
 
 
@@ -420,36 +438,36 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                     telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                 }
 
-                if(result.getTx() < -1){
+                if(result.getTx() < 1){
 
                     if(limitSwitch.isLeftLimitSwitchClosed()){
                         telemetry.addLine("Limit Reached");
                     }else{
-                        turret.setPosition(turret.getPosition() - 0.00175);
                         telemetry.addLine("Moving left");
                         lights.setRedLed1(true);
                         lights.setGreenLed1(true);
                     }
                 }
 
-                else if(result.getTx() > -1 && result.getTx() < 3){
+                else if(result.getTx() > -1 && result.getTx() < 3.5){
                     telemetry.addLine("Stopped");
                     lights.setRedLed1(true);
                     lights.setGreenLed1(false);
 
 
                 }
-                else if(result.getTx() > 3) {
+                else if(result.getTx() > 3.5) {
 
                     if(limitSwitch.isRightLimitSwitchClosed()){
                         telemetry.addLine("Limit Reached");
                     }else{
-                        turret.setPosition(turret.getPosition() + 0.00175);
                         telemetry.addLine("Moving right");
                         lights.setRedLed1(true);
                         lights.setGreenLed1(true);
                     }
                 }
+
+
 
 
 
@@ -490,27 +508,27 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 //
 //
 //                        if (result.getTa() < 3.5 && result.getTa() > 2.3) {
-//                            shooter.setVelocity(1150);
+//                            rShooter.setVelocity(1150);
 //                            lHood.setPosition(1);
 //                            rHood.setPosition(0);
 //                        }
 //                        else if (result.getTa() < 2.3 && result.getTa() > 1) {
-//                            shooter.setVelocity(1200);
+//                            rShooter.setVelocity(1200);
 //                            lHood.setPosition(0.95);
 //                            rHood.setPosition(0.05);
 //                        }
 //                        else if (result.getTa() < 1 && result.getTa() > 0.38) {
-//                            shooter.setVelocity(1375);
+//                            rShooter.setVelocity(1375);
 //                            lHood.setPosition(0.925);
 //                            rHood.setPosition(0.075);
 //                        }
 //                        else if (result.getTa() < 0.38 && result.getTa() > 0.29) {
-//                            shooter.setVelocity(1700);
+//                            rShooter.setVelocity(1700);
 //                            lHood.setPosition(0.915);
 //                            rHood.setPosition(0.085);
 //                        }
 //                        else if (result.getTa() < 0.29) {
-//                            shooter.setVelocity(1735);
+//                            rShooter.setVelocity(1735);
 //                            lHood.setPosition(0.915);
 //                            rHood.setPosition(0.085);
 //                        }
@@ -608,44 +626,44 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                         velocity = 1250;
                         P = 120;
                         F = 12.68;
-                        lHood.setPosition(0.925);
-                        rHood.setPosition(0.075);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.8 && result.getTa() > 0.6) {
                         velocity = 1400;
                         P = 120;
                         F = 12.47;
-                        lHood.setPosition(0.925);
-                        rHood.setPosition(0.075);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.6 && result.getTa() > 0.43) {
                         velocity = 1425;
                         P = 120;
                         F = 12.1;
-                        lHood.setPosition(0.925);
-                        rHood.setPosition(0.075);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.43 && result.getTa() > 0.38) {
                         velocity = 1450;
                         P = 140;
                         F = 11.8;
-                        lHood.setPosition(0.915);
-                        rHood.setPosition(0.085);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.38 && result.getTa() > 0.33) {
                         velocity = 1475;
                         P = 140;
                         F = 12.3;
-                        lHood.setPosition(0.915);
-                        rHood.setPosition(0.085);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.33 && result.getTa() > 0.28) {
                         velocity = 1525;
                         P = 140;
                         F = 12.6;
-                        lHood.setPosition(0.915);
-                        rHood.setPosition(0.085);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.28 && result.getTa() > 0.23) {
                         velocity = 1575;
                         P = 140;
                         F = 13;
-                        lHood.setPosition(0.915);
-                        rHood.setPosition(0.085);
+                        lHood.setPosition(0.91);
+                        rHood.setPosition(0.09);
                     }
 
                 }
@@ -659,7 +677,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
 
             if (result.getTa() == 0 && iDoNotSeeTheSignTimer.seconds() > 1) {
-                velocity = 1050;
+                velocity = 1025;
                 P = 100;
                 F = 13.51;
                 lHood.setPosition(0.95);
@@ -720,8 +738,10 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                 lowerRoller.setPower(0);
                 lLifter.setPower(0);
                 rLifter.setPower(0);
-                shooter.setPower(0);
-                shooter.setVelocity(0);
+                lShooter.setPower(0);
+                lShooter.setVelocity(0);
+                rShooter.setPower(0);
+                rShooter.setVelocity(0);
                 gate.setPosition(0.7);
                 shooterActivated = false;
 
@@ -748,8 +768,8 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                 velocity = 1600;
                 P = 140;
                 F = 11.7;
-                lHood.setPosition(0.915);
-                rHood.setPosition(0.085);
+                lHood.setPosition(0.91);
+                rHood.setPosition(0.09);
                 shooterActivated = true;
             }
 
@@ -765,11 +785,13 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
 
             if(shooterActivated){
-                shooter.setVelocity(velocity);
+                lShooter.setVelocity(velocity);
+                rShooter.setVelocity(velocity);
             } else if (!shooterActivated) {
                 P = 10;
                 F = 18.1;
-                shooter.setVelocity(idleVelocity);
+                lShooter.setVelocity(idleVelocity);
+                rShooter.setVelocity(idleVelocity);
             }
 
 
@@ -813,10 +835,10 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                 upperRoller.setPower(0);
             }
 
-            if(shooter.getVelocity() > velocity - 50 && shooter.getVelocity() < velocity + 50){
+            if(rShooter.getVelocity() > velocity - 50 && rShooter.getVelocity() < velocity + 50){
                 lights.setRedLed2(true);
                 lights.setGreenLed2(false);
-            } else if (shooter.getVelocity() > velocity - 150 && shooter.getVelocity() < velocity - 50 || shooter.getVelocity() < velocity + 150 && shooter.getVelocity() > velocity + 50) {
+            } else if (rShooter.getVelocity() > velocity - 150 && rShooter.getVelocity() < velocity - 50 || rShooter.getVelocity() < velocity + 150 && rShooter.getVelocity() > velocity + 50) {
                 lights.setRedLed2(true);
                 lights.setGreenLed2(true);
             }else {
@@ -837,7 +859,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             telemetry.addData("blue", blueValue);
             telemetry.addData("Left Magnet state" , limitSwitch.isLeftLimitSwitchClosed());
             telemetry.addData("Right Magnet state" , limitSwitch.isRightLimitSwitchClosed());
-            telemetry.addData("Current Velocity", shooter.getVelocity());
+            telemetry.addData("Current Velocity", rShooter.getVelocity());
             telemetry.addData("Target Velocity", velocity);
             telemetry.update();
 

@@ -16,15 +16,17 @@ import org.openftc.apriltag.AprilTagDetection;
 import java.util.List;
 
 public class TurretMechanismV2 {
-    private CRServo turret;
+    private DcMotorEx turret;
     private Limelight3A limelight;
     private double kP = 0.0001;
     private double kD = 0.000000;
     private double goalX = 0;
     private double lastError = 0;
-    private double angleTolerance = 3;
+    private double angleTolerance = 0.5;
     private final double MAX_POWER = 1;
+    private final double ZERO_POWER = 0;
     private double power = 0;
+    private double desiredPower;
     private final ElapsedTime timer = new ElapsedTime();
     LimitSwitch limitSwitch = new LimitSwitch();
 
@@ -32,12 +34,15 @@ public class TurretMechanismV2 {
 
 
     public void init(HardwareMap hwMap){
-        turret = hwMap.get(CRServo.class, "turret");
+        turret = hwMap.get(DcMotorEx.class, "turret");
+        turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         limitSwitch.init(hwMap);
 
     }
 
-
+    public void setGoalXOffset (int goalXOffset){
+        goalX = goalXOffset;
+    }
 
 
 
@@ -84,10 +89,30 @@ public class TurretMechanismV2 {
             dTerm = ((error - lastError) / deltaTime) * kD;
         }
 
-        if (Math.abs(error) < angleTolerance || limitSwitch.isRightLimitSwitchClosed()|| limitSwitch.isLeftLimitSwitchClosed()){
+        if (Math.abs(error) < angleTolerance){
             power = 0;
         } else{
-            power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
+           desiredPower = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
+//            if(limitSwitch.isLeftLimitSwitchClosed()){
+//                power = Range.clip(pTerm + dTerm, ZERO_POWER, MAX_POWER);
+//            }else if(limitSwitch.isRightLimitSwitchClosed()){
+//                power = Range.clip(pTerm + dTerm, -MAX_POWER, ZERO_POWER);
+//            }else{
+//                power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
+//            }
+            if (limitSwitch.isLeftLimitSwitchClosed() && desiredPower < 0) {
+                // Trying to move further left — block it
+                power = 0;
+            }
+            else if (limitSwitch.isRightLimitSwitchClosed() && desiredPower > 0) {
+                // Trying to move further right — block it
+                power = 0;
+            }
+            else {
+                // Safe to move
+                power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
+            }
+
         }
 
         // magnetic limit switch safety check

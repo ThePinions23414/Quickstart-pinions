@@ -21,9 +21,7 @@ public class IntakeLogicNotSorted {
     public boolean readyToIntake = false;
     int ballsRemaining = 0;
     int ballPickUpNumber = 1;
-    double slot1Position = 0.185;
-    double slot2Position = 0.255;
-    double slot3Position = 0.335;
+    double slot1Position = 0.32;
     private enum IntakeState {
         IDLE,
         INTAKE,

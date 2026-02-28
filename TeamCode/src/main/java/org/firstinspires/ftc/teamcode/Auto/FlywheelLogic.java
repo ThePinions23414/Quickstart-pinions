@@ -15,10 +15,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.List;
 
 public class FlywheelLogic {
-    private DcMotorEx shooter;
+    private DcMotorEx lShooter;
+    private DcMotorEx rShooter;
     private CRServo upperRoller;
     private CRServo lowerRoller;
-    private Servo turret;
+    private DcMotorEx turret;
     private Servo gate;
     private Servo leftHood;
     private Servo rightHood;
@@ -49,10 +50,10 @@ public class FlywheelLogic {
 
 
     private String pattern = "";
-    double slot1Position = 0.185;
-    double slot2Position = 0.255;
-    double slot3Position = 0.335;
-    double turretPosition = 0.065;
+    double slot1Position = 0.32;
+    double slot2Position = 0.39;
+    double slot3Position = 0.465;
+    int turretPosition = 0;
     double lHoodPosition = 0.95;
     double rHoodPosition = 0.05;
 
@@ -63,20 +64,28 @@ public class FlywheelLogic {
         rightHood = hwMap.get(Servo.class, "rightHood");
         upperRoller = hwMap.get(CRServo.class, "upperRoller");
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
-        turret = hwMap.get(Servo.class, "turret");
+        turret = hwMap.get(DcMotorEx.class, "turret");
         gate = hwMap.get(Servo.class, "gate");
-        shooter = hwMap.get(DcMotorEx.class, "shooter");
+        lShooter = hwMap.get(DcMotorEx.class, "leftShooter");
+        rShooter = hwMap.get(DcMotorEx.class, "rightShooter");
         spindexer = hwMap.get(Servo.class, "spindexer");
         limelight = hwMap.get(Limelight3A.class, "limelight");
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        lShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rShooter.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
-        shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        lShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        rShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         flywheelState = FlywheelState.IDLE;
 
-        shooter.setVelocity(0);
+        lShooter.setVelocity(0);
+        rShooter.setVelocity(0);
         spindexer.setPosition(slot1Position);
         leftHood.setPosition(lHoodPosition);
         rightHood.setPosition(rHoodPosition);
@@ -111,6 +120,14 @@ public class FlywheelLogic {
         }
     }
 
+    public void setTurretDirection(String direction){
+        if(direction.equals("left")){
+            turretPosition = -800;
+        } else if (direction.equals("right")) {
+            turretPosition = 875;
+        }
+    }
+
 
 
     public void update() {
@@ -123,9 +140,12 @@ public class FlywheelLogic {
                 }
                 break;
             case SPIN_UP:
-                shooter.setVelocity(TARGET_FLYWHEEL_RPM);
+                lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
+                rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 gate.setPosition(0.7);
-                turret.setPosition(turretPosition);
+                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setTargetPosition(turretPosition);
+                turret.setPower(1);
                 lowerRoller.setPower(1);
                 upperRoller.setPower(0);
                 if(shotsRemaining > 0){
@@ -223,7 +243,7 @@ public class FlywheelLogic {
             case LAUNCH:
 
 
-                if (shooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
+                if (rShooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
 
                     gate.setPosition(0.2);
 

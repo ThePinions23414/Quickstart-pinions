@@ -28,7 +28,7 @@ public class Leave extends LinearOpMode {
         bR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         waitForStart();
-        spindexer.setPosition(0.15);
+        spindexer.setPosition(0.32);
 
 
         if (isStopRequested()) {
