@@ -54,8 +54,8 @@ public class FlywheelLogic {
     double slot2Position = 0.39;
     double slot3Position = 0.465;
     int turretPosition = 0;
-    double lHoodPosition = 0.95;
-    double rHoodPosition = 0.05;
+    double lHoodPosition = 0.925;
+    double rHoodPosition = 0.075;
 
 
 
@@ -75,6 +75,7 @@ public class FlywheelLogic {
         rShooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         lShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
@@ -124,7 +125,7 @@ public class FlywheelLogic {
         if(direction.equals("left")){
             turretPosition = -800;
         } else if (direction.equals("right")) {
-            turretPosition = 875;
+            turretPosition = 850;
         }
     }
 
@@ -143,8 +144,8 @@ public class FlywheelLogic {
                 lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 gate.setPosition(0.7);
-                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setTargetPosition(turretPosition);
+                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
                 lowerRoller.setPower(1);
                 upperRoller.setPower(0);
@@ -250,7 +251,7 @@ public class FlywheelLogic {
                     lowerRoller.setPower(1);
 
 
-                    if (shootTimer.seconds() > 1.4){
+                    if (shootTimer.seconds() > 1.45){
 
                         upperRoller.setPower(0);
                         shotsRemaining--;

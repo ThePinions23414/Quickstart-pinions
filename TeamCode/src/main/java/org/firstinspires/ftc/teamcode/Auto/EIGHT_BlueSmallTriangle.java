@@ -46,17 +46,17 @@ public class EIGHT_BlueSmallTriangle extends OpMode {
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(63.64444444444444, 8.177777777777768, Math.toRadians(90));
-    private final Pose shoot1Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(114));
-    private final Pose ball1Pose = new Pose(44.555555555555564, 35.37777777777776, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(12.266666666666671, 35.688888888888876, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(114));
-    private final Pose ball2Pose = new Pose(13.26666666666667, 16.488888888888887, Math.toRadians(195));
-    private final Pose ball2Pose2 = new Pose(22, 16.333333333333334, Math.toRadians(195));
-    private final Pose ball2Pose3 = new Pose(11, 11.955555555555568, Math.toRadians(200));
 
-    private final Pose shoot3Pose = new Pose(59.55555555555555, 12.177777777777763, Math.toRadians(114));
-    private final Pose endPose = new Pose(45.40217772097908, 24.37153723529663, Math.toRadians(90));
+    private final Pose startPose = new Pose(55.9975, 8.177777777777768, Math.toRadians(90));
+    private final Pose shoot1Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(116));
+    private final Pose ball1Pose = new Pose(47.86541, 35.227930535455855, Math.toRadians(180));
+    private final Pose pick1Pose = new Pose(12.73661, 35.21635311143271, Math.toRadians(180));
+    private final Pose shoot2Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(115));
+    private final Pose ball2Pose = new Pose(13.27, 16.488888888888887, Math.toRadians(200));
+    private final Pose ball2Pose2 = new Pose(22, 16.333333333333334, Math.toRadians(200));
+    private final Pose ball2Pose3 = new Pose(13, 9.955555555555568, Math.toRadians(205));
+    private final Pose shoot3Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(115));
+    private final Pose endPose = new Pose(45.4, 24.37153723529663, Math.toRadians(90));
 
 
 
@@ -197,10 +197,10 @@ public class EIGHT_BlueSmallTriangle extends OpMode {
             case DRIVE_BALL2POS3_SHOOT3POS:
 
 
-                    if(!follower.isBusy()){
-                        follower.followPath(ball2PosShoot3Pos, true);
-                        setPathState(PathState.SHOOT_PRELOAD3);
-                    }
+                if(!follower.isBusy()){
+                    follower.followPath(ball2PosShoot3Pos, true);
+                    setPathState(PathState.SHOOT_PRELOAD3);
+                }
 
 
 
@@ -227,7 +227,7 @@ public class EIGHT_BlueSmallTriangle extends OpMode {
             default:
                 telemetry.addLine("No State Commanded");
                 break;
-       }
+        }
     }
 
     public void setPathState(PathState newState) {
@@ -285,4 +285,5 @@ public class EIGHT_BlueSmallTriangle extends OpMode {
 
     }
 }
+
 

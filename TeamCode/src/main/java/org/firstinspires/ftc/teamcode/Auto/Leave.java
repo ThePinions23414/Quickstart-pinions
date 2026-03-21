@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 
-@Autonomous(name = "SmallTriangleLeave")
+@Autonomous(name = "Leave")
 public class Leave extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

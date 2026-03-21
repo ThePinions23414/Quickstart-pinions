@@ -5,18 +5,20 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
+@Disabled
 @Autonomous
 public class RedGoalUnsorted extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
-    private FlywheelLogic shooter = new FlywheelLogic();
-    private IntakeLogicUnsorted intake = new IntakeLogicUnsorted();
+    private FlywheelLogicNotSorted shooter = new FlywheelLogicNotSorted();
+    private IntakeLogicNotSorted intake = new IntakeLogicNotSorted();
 
     private boolean shotsTriggered = false;
     private boolean intakeTriggered = false;
@@ -98,7 +100,6 @@ public class RedGoalUnsorted extends OpMode {
     public void statePathUpdate() {
         switch(pathState) {
             case DRIVE_STARTPOS_SHOOT1POS:
-                shooter.getID();
                 shooter.spinUp(true);
                 follower.followPath(driveStartPosShoot1Pos, true);
                 setPathState(PathState.SHOOT_PRELOAD1);
@@ -219,7 +220,7 @@ public class RedGoalUnsorted extends OpMode {
         intake.init(hardwareMap);
         buildPaths();
         follower.setPose(startPose);
-        shooter.startLimeLight();
+
     }
 
     @Override

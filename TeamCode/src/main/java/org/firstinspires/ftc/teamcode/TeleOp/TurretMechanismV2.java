@@ -24,7 +24,7 @@ public class TurretMechanismV2 {
     private double lastError = 0;
     private double angleTolerance = 0.5;
     private final double MAX_POWER = 1;
-    private final double ZERO_POWER = 0;
+    private final double REDUCED_POWER = 0.5;
     private double power = 0;
     private double desiredPower;
     private final ElapsedTime timer = new ElapsedTime();
@@ -35,12 +35,14 @@ public class TurretMechanismV2 {
 
     public void init(HardwareMap hwMap){
         turret = hwMap.get(DcMotorEx.class, "turret");
+        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         limitSwitch.init(hwMap);
 
     }
 
-    public void setGoalXOffset (int goalXOffset){
+    public void setGoalXOffset (double goalXOffset){
         goalX = goalXOffset;
     }
 
@@ -92,7 +94,11 @@ public class TurretMechanismV2 {
         if (Math.abs(error) < angleTolerance){
             power = 0;
         } else{
-           desiredPower = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
+           if(turret.getCurrentPosition() < -400 || turret.getCurrentPosition() > 300){
+               desiredPower = Range.clip(pTerm + dTerm, -REDUCED_POWER, REDUCED_POWER);
+           }else{
+               desiredPower = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
+           }
 //            if(limitSwitch.isLeftLimitSwitchClosed()){
 //                power = Range.clip(pTerm + dTerm, ZERO_POWER, MAX_POWER);
 //            }else if(limitSwitch.isRightLimitSwitchClosed()){
@@ -100,11 +106,11 @@ public class TurretMechanismV2 {
 //            }else{
 //                power = Range.clip(pTerm + dTerm, -MAX_POWER, MAX_POWER);
 //            }
-            if (limitSwitch.isLeftLimitSwitchClosed() && desiredPower < 0) {
+            if ((limitSwitch.isLeftLimitSwitchClosed() && desiredPower < 0) || (turret.getCurrentPosition() < -600 && desiredPower < 0)) {
                 // Trying to move further left — block it
                 power = 0;
             }
-            else if (limitSwitch.isRightLimitSwitchClosed() && desiredPower > 0) {
+            else if ((limitSwitch.isRightLimitSwitchClosed() && desiredPower > 0) || (turret.getCurrentPosition() > 550 && desiredPower > 0)) {
                 // Trying to move further right — block it
                 power = 0;
             }

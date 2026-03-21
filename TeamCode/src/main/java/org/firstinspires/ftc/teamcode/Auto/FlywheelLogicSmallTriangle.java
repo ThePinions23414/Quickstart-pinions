@@ -41,7 +41,7 @@ public class FlywheelLogicSmallTriangle {
     private int shotsRemaining = 0;
     private int shotNumber = 1;
     private double flywheelVelocity = 0;
-    private double MIN_FLYWHEEL_RPM = 1375;
+    private double MIN_FLYWHEEL_RPM = 1400;
     private double TARGET_FLYWHEEL_RPM = 1475;
     private double FLYWHEEL_MAX_SPINUP_TIME = 2.75;
     double P = 140;
@@ -55,8 +55,8 @@ public class FlywheelLogicSmallTriangle {
     double slot2Position = 0.39;
     double slot3Position = 0.465;
     double turretPosition = 0;
-    double lHoodPosition = 0.915;
-    double rHoodPosition = 0.085;
+    double lHoodPosition = 0.91;
+    double rHoodPosition = 0.09;
 
 
     private String pattern = "";
@@ -79,6 +79,8 @@ public class FlywheelLogicSmallTriangle {
         rShooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         lShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
@@ -139,8 +141,8 @@ public class FlywheelLogicSmallTriangle {
                 lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 gate.setPosition(0.7);
-                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setTargetPosition(0);
+                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
                 lowerRoller.setPower(1);
                 upperRoller.setPower(0);

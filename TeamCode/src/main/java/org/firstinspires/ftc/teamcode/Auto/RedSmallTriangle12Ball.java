@@ -45,16 +45,16 @@ public class RedSmallTriangle12Ball extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(88.0025, 8.177777777777768, Math.toRadians(90));
-    private final Pose shoot1Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
-    private final Pose ball1Pose = new Pose(96.13459, 35.727930535455855, Math.toRadians(0));
-    private final Pose pick1Pose = new Pose(128.26339, 35.71635311143271, Math.toRadians(0));
-    private final Pose shoot2Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
-    private final Pose ball2Pose = new Pose(99.03292, 59.76978997878086, Math.toRadians(0));
-    private final Pose pick2Pose = new Pose(131.81581, 59.70268438143005, Math.toRadians(0));
-    private final Pose shoot3Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
+    private final Pose shoot1Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(64));
+    private final Pose ball1Pose = new Pose(96.13459, 35.227930535455855, Math.toRadians(0));
+    private final Pose pick1Pose = new Pose(131.26339, 35.21635311143271, Math.toRadians(0));
+    private final Pose shoot2Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(65));
+    private final Pose ball2Pose = new Pose(99.03292, 59.26978997878086, Math.toRadians(0));
+    private final Pose pick2Pose = new Pose(128.81581, 59.20268438143005, Math.toRadians(0));
+    private final Pose shoot3Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(65));
     private final Pose ball3Pose = new Pose(98.01319, 84, Math.toRadians(0));
     private final Pose pick3Pose = new Pose(124.99344, 84, Math.toRadians(0));
-    private final Pose shoot4Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(66));
+    private final Pose shoot4Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(65));
     private final Pose endPose = new Pose(98.59783, 24.37153723529663, Math.toRadians(90));
 
 

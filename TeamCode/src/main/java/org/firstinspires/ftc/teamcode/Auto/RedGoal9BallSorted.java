@@ -42,15 +42,15 @@ public class RedGoal9BallSorted extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(123.750013, 123.927644166881, Math.toRadians(216.5));
-    private final Pose shoot1Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(44.5));
+    private final Pose shoot1Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(43.5));
     private final Pose ball1Pose = new Pose(101.01319, 84.5, Math.toRadians(0));
-    private final Pose pick1Pose = new Pose(125.99344, 84.5, Math.toRadians(0));
+    private final Pose pick1Pose = new Pose(122.99344, 84.5, Math.toRadians(0));
     private final Pose shoot2Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(42.5));
-    private final Pose ball2Pose = new Pose(99.03292, 59.26978997878086, Math.toRadians(0));
-    private final Pose pick2Pose = new Pose(131.81581, 59.20268438143005, Math.toRadians(0));
+    private final Pose ball2Pose = new Pose(99.03292, 60.26978997878086, Math.toRadians(0));
+    private final Pose pick2Pose = new Pose(131.81581, 60.20268438143005, Math.toRadians(0));
     private final Pose backUp = new Pose(118.81581, 59.80268438143005, Math.toRadians(0));
     private final Pose shoot3Pose = new Pose(96.15807112, 95.8023690459329, Math.toRadians(42.5));
-    private final Pose endPose = new Pose(115.66449, 66.63820390196331, Math.toRadians(360));
+    private final Pose endPose = new Pose(115.66449, 66.63820390196331, Math.toRadians(0));
 
 
 

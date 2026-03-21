@@ -11,12 +11,12 @@ import com.pedropathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class BlueGoal9BallSorted extends OpMode {
+public class RedSmallTriangle9Ball extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
-    private FlywheelLogic shooter = new FlywheelLogic();
-    private IntakeLogic intake = new IntakeLogic();
+    private FlywheelLogicNotSortedST shooter = new FlywheelLogicNotSortedST();
+    private IntakeLogicNotSorted intake = new IntakeLogicNotSorted();
 
     private boolean shotsTriggered = false;
     private boolean intakeTriggered = false;
@@ -33,28 +33,27 @@ public class BlueGoal9BallSorted extends OpMode {
         SHOOT_PRELOAD2,
         DRIVE_SHOOT2POS_BALL2POS,
         DRIVE_BALL2POS_PICK2POS,
-        DRIVE_PICK2POS_BACK_UP,
-        BACK_UP_SHOOT3POS,
+        DRIVE_PICK2POS_SHOOT3POS,
         SHOOT_PRELOAD3,
         DRIVE_SHOOT3POS_ENDPOS
     }
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(20.24999, 123.927644166881, Math.toRadians(323.5));
-    private final Pose shoot1Pose = new Pose(47.84192, 95.8023690459329, Math.toRadians(136.5));
-    private final Pose ball1Pose = new Pose(42.98681, 84.5, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(21.00656, 84.5, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(47.84192, 95.8023690459329, Math.toRadians(138.5));
-    private final Pose ball2Pose = new Pose(44.96708, 60.26978997878086, Math.toRadians(180));
-    private final Pose pick2Pose = new Pose(12.18419, 60.20268438143005, Math.toRadians(180));
-    private final Pose backUp = new Pose(25.18419, 59.80268438143005, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(47.84192, 95.8023690459329, Math.toRadians(138.5));
-    private final Pose endPose = new Pose(28.33551, 66.63820390196331, Math.toRadians(180));
+    private final Pose startPose = new Pose(88.0025, 8.177777777777768, Math.toRadians(90));
+    private final Pose shoot1Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(64));
+    private final Pose ball1Pose = new Pose(96.13459, 35.227930535455855, Math.toRadians(0));
+    private final Pose pick1Pose = new Pose(131.26339, 35.21635311143271, Math.toRadians(0));
+    private final Pose shoot2Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(65));
+    private final Pose ball2Pose = new Pose(99.03292, 59.26978997878086, Math.toRadians(0));
+    private final Pose pick2Pose = new Pose(128.81581, 59.20268438143005, Math.toRadians(0));
+    private final Pose shoot3Pose = new Pose(88.44445, 12.177777777777763, Math.toRadians(65));
+    private final Pose endPose = new Pose(98.59783, 24.37153723529663, Math.toRadians(90));
 
 
 
-    private PathChain driveStartPosShoot1Pos, driveShoot1PosBall1Pos, driveBall1PosPick1Pos, drivePick1PosShoot2Pos, driveShoot2PosBall2Pos, driveBall2PosPick2Pos, drivePick2PosBackUp, backUpShoot3Pos, driveShoot3PosEndPos;
+
+    private PathChain driveStartPosShoot1Pos, driveShoot1PosBall1Pos, driveBall1PosPick1Pos, drivePick1PosShoot2Pos, driveShoot2PosBall2Pos, driveBall2PosPick2Pos, drivePick2PosShoot3Pos, driveShoot3PosEndPos;
 
     public void buildPaths() {
         driveStartPosShoot1Pos = follower.pathBuilder()
@@ -81,13 +80,9 @@ public class BlueGoal9BallSorted extends OpMode {
                 .addPath(new BezierLine(ball2Pose, pick2Pose))
                 .setLinearHeadingInterpolation(ball2Pose.getHeading(), pick2Pose.getHeading())
                 .build();
-        drivePick2PosBackUp = follower.pathBuilder()
-                .addPath(new BezierLine(pick2Pose, backUp))
-                .setLinearHeadingInterpolation(pick2Pose.getHeading(), backUp.getHeading())
-                .build();
-        backUpShoot3Pos = follower.pathBuilder()
-                .addPath(new BezierLine(backUp, shoot3Pose))
-                .setLinearHeadingInterpolation(backUp.getHeading(), shoot3Pose.getHeading())
+        drivePick2PosShoot3Pos = follower.pathBuilder()
+                .addPath(new BezierLine(pick2Pose, shoot3Pose))
+                .setLinearHeadingInterpolation(pick2Pose.getHeading(), shoot3Pose.getHeading())
                 .build();
         driveShoot3PosEndPos = follower.pathBuilder()
                 .addPath(new BezierLine(shoot3Pose, endPose))
@@ -98,7 +93,7 @@ public class BlueGoal9BallSorted extends OpMode {
     public void statePathUpdate() {
         switch(pathState) {
             case DRIVE_STARTPOS_SHOOT1POS:
-                shooter.getID();
+
                 shooter.spinUp(true);
                 follower.followPath(driveStartPosShoot1Pos, true);
                 setPathState(PathState.SHOOT_PRELOAD1);
@@ -159,23 +154,14 @@ public class BlueGoal9BallSorted extends OpMode {
                 intake.intakeBalls(3);
                 if(!follower.isBusy()){
                     follower.followPath(driveBall2PosPick2Pos, true);
-                    setPathState(PathState.DRIVE_PICK2POS_BACK_UP);
+                    setPathState(PathState.DRIVE_PICK2POS_SHOOT3POS);
                 }
                 break;
-            case DRIVE_PICK2POS_BACK_UP:
+            case DRIVE_PICK2POS_SHOOT3POS:
                 if(!follower.isBusy()){
-                    follower.followPath(drivePick2PosBackUp, true);
-                    setPathState(PathState.BACK_UP_SHOOT3POS);
-                }
-
-                break;
-
-            case BACK_UP_SHOOT3POS:
-                if(!follower.isBusy()){
-                    follower.followPath(backUpShoot3Pos, true);
+                    follower.followPath(drivePick2PosShoot3Pos, true);
                     setPathState(PathState.SHOOT_PRELOAD3);
                 }
-
                 break;
             case SHOOT_PRELOAD3:
                 if (!follower.isBusy()&& !intake.isStillGoing()) {
@@ -193,7 +179,9 @@ public class BlueGoal9BallSorted extends OpMode {
                     follower.followPath(driveShoot3PosEndPos, true);
                     telemetry.addLine("Done Autonomous");
                 }
+
                 break;
+
             default:
                 telemetry.addLine("No State Commanded");
                 break;
@@ -215,14 +203,12 @@ public class BlueGoal9BallSorted extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
 
-        shooter.setTurretDirection("right");
-
 
         shooter.init(hardwareMap);
         intake.init(hardwareMap);
         buildPaths();
         follower.setPose(startPose);
-        shooter.startLimeLight();
+
     }
 
     @Override
@@ -257,4 +243,5 @@ public class BlueGoal9BallSorted extends OpMode {
 
     }
 }
+
 

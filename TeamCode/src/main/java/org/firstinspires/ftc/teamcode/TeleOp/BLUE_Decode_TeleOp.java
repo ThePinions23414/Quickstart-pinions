@@ -11,10 +11,13 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.List;
 
@@ -47,8 +50,6 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         Servo light1 = hardwareMap.get(Servo.class, "light1");
         Servo light2 = hardwareMap.get(Servo.class, "light2");
         Servo light3 = hardwareMap.get(Servo.class, "light3");
-
-
         ColorSensor intakeColorSensor = hardwareMap.get(ColorSensor.class, "intakeColorSensor");
         ColorSensor shooterColorSensor = hardwareMap.get(ColorSensor.class, "shooterColorSensor");
         TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "touchSensor");
@@ -83,7 +84,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         boolean ball1ReadyForEntry = false;
         boolean ball2ReadyForEntry = false;
         boolean ball3ReadyForEntry = false;
-
+        boolean justSpitting = false;
 
 
 
@@ -141,7 +142,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
         telemetry.addLine("I'm ready");
         telemetry.update();
 
-
+        turretClass.setGoalXOffset(2);
 
 
 
@@ -406,13 +407,13 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
 
-            turretClass.setGoalXOffset(2);
+
             LLResult id20 = limeLightClass.getSpecificId(20);
             turretClass.update(id20);
-
-
-            turretClass.setkP(0.0601);
+            turretClass.setkP(0.0501);
             turretClass.setkD(0.00001);
+
+
 
             if (id20 != null){
                 telemetry.addLine("I saw the sign");
@@ -438,7 +439,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                     telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                 }
 
-                if(result.getTx() < 1){
+                if(result.getTx() < -2){
 
                     if(limitSwitch.isLeftLimitSwitchClosed()){
                         telemetry.addLine("Limit Reached");
@@ -449,7 +450,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                     }
                 }
 
-                else if(result.getTx() > -1 && result.getTx() < 3.5){
+                else if(result.getTx() > -2 && result.getTx() < 3.5){
                     telemetry.addLine("Stopped");
                     lights.setRedLed1(true);
                     lights.setGreenLed1(false);
@@ -593,72 +594,84 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 //                        rHood.setPosition(0.085);
 //                    }
                     if (result.getTa() < 3.5 && result.getTa() > 2.9) {
+                        turretClass.setGoalXOffset(-2);
                         velocity = 1050;
                         P = 100;
                         F = 13.51;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     } else if (result.getTa() < 2.9 && result.getTa() > 2.5) {
-                        velocity = 1050;
+                        turretClass.setGoalXOffset(-2);
+                        velocity = 1075;
                         P = 100;
                         F = 12.7;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     }else if (result.getTa() < 2.5 && result.getTa() > 2) {
-                        velocity = 1075;
+                        turretClass.setGoalXOffset(-2);
+                        velocity = 1100;
                         P = 100;
                         F = 12.46;
                         lHood.setPosition(0.95);
                         rHood.setPosition(0.05);
                     } else if (result.getTa() < 2 && result.getTa() > 1.5) {
-                        velocity = 1100;
+                        turretClass.setGoalXOffset(-2);
+                        velocity = 1150;
                         P = 100;
                         F = 12.51;
-                        lHood.setPosition(0.95);
-                        rHood.setPosition(0.05);
+                        lHood.setPosition(0.925);
+                        rHood.setPosition(0.075);
                     }else if (result.getTa() < 1.5 && result.getTa() > 1) {
+                        turretClass.setGoalXOffset(2);
                         velocity = 1200;
                         P = 120;
                         F = 12.6;
                         lHood.setPosition(0.925);
                         rHood.setPosition(0.075);
                     } else if (result.getTa() < 1 && result.getTa() > 0.8) {
+                        turretClass.setGoalXOffset(-1);
                         velocity = 1250;
                         P = 120;
                         F = 12.68;
                         lHood.setPosition(0.91);
                         rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.8 && result.getTa() > 0.6) {
-                        velocity = 1400;
+                        turretClass.setGoalXOffset(-1);
+                        velocity = 1325;
                         P = 120;
                         F = 12.47;
                         lHood.setPosition(0.91);
                         rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.6 && result.getTa() > 0.43) {
-                        velocity = 1425;
+                        turretClass.setGoalXOffset(-1);
+                        velocity = 1375;
                         P = 120;
                         F = 12.1;
                         lHood.setPosition(0.91);
                         rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.43 && result.getTa() > 0.38) {
-                        velocity = 1450;
+                        turretClass.setGoalXOffset(2.5);
+                        velocity = 1425;
                         P = 140;
                         F = 11.8;
                         lHood.setPosition(0.91);
                         rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.38 && result.getTa() > 0.33) {
+                        turretClass.setGoalXOffset(2.5);
                         velocity = 1475;
                         P = 140;
                         F = 12.3;
                         lHood.setPosition(0.91);
                         rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.33 && result.getTa() > 0.28) {
+                        turretClass.setGoalXOffset(2.5);
                         velocity = 1525;
                         P = 140;
                         F = 12.6;
                         lHood.setPosition(0.91);
                         rHood.setPosition(0.09);
                     } else if (result.getTa() < 0.28 && result.getTa() > 0.23) {
+                        turretClass.setGoalXOffset(2.5);
                         velocity = 1575;
                         P = 140;
                         F = 13;
@@ -677,6 +690,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
 
             if (result.getTa() == 0 && iDoNotSeeTheSignTimer.seconds() > 1) {
+                turretClass.setGoalXOffset(2);
                 velocity = 1025;
                 P = 100;
                 F = 13.51;
@@ -719,10 +733,10 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                     intake.setPower(1);
 
                 }
-                else {
+                else if(!justSpitting){
                     intake.setPower(0);
                 }
-            }else {
+            }else if(!justSpitting){
                 intake.setPower(0);
             }
 
@@ -756,7 +770,26 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
 
             }
+
+
+            if (gamepad2.dpadDownWasPressed() && !override){
+                justSpitting = true;
+                intake.setPower(-1);
+                lowerRoller.setPower(-1);
+                upperRoller.setPower(-1);
+                lLifter.setPower(-1);
+                rLifter.setPower(1);
+            }
+            else if (gamepad2.dpadDownWasReleased() && !override) {
+                justSpitting = false;
+                intake.setPower(0);
+                lowerRoller.setPower(0);
+                upperRoller.setPower(0);
+                lLifter.setPower(0);
+                rLifter.setPower(0);
+            }
             if(gamepad2.dpad_down && override){
+                turretClass.setGoalXOffset(2);
                 velocity = 1175;
                 P = 100;
                 F = 12.46;
@@ -765,11 +798,12 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                 shooterActivated = true;
             }
             if(gamepad2.dpad_up && override){
+                turretClass.setGoalXOffset(1.5);
                 velocity = 1600;
                 P = 140;
                 F = 11.7;
-                lHood.setPosition(0.91);
-                rHood.setPosition(0.09);
+                lHood.setPosition(0.9);
+                rHood.setPosition(0.1);
                 shooterActivated = true;
             }
 
@@ -779,10 +813,6 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
 
             }
 
-            if(gamepad2.a && override){
-                shooterActivated = true;
-
-            }
 
             if(shooterActivated){
                 lShooter.setVelocity(velocity);
@@ -813,7 +843,6 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
                 slot2Color = "empty";
                 slot3Color = "empty";
                 spindexer.setPosition(slot1Position);
-                lowerRoller.setPower(1);
             }
 
             if(gamepad2.x && override){
@@ -827,12 +856,21 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             }
 
             if (gamepad2.aWasPressed() && override){
+                justSpitting = true;
+                intake.setPower(1);
+                lowerRoller.setPower(1);
                 upperRoller.setPower(1);
+                lLifter.setPower(1);
+                rLifter.setPower(-1);
                 gate.setPosition(0.2);
-
             }
             else if (gamepad2.aWasReleased() && override) {
+                justSpitting = false;
+                intake.setPower(0);
+                lowerRoller.setPower(0);
                 upperRoller.setPower(0);
+                lLifter.setPower(0);
+                rLifter.setPower(0);
             }
 
             if(rShooter.getVelocity() > velocity - 50 && rShooter.getVelocity() < velocity + 50){
@@ -861,6 +899,7 @@ public class BLUE_Decode_TeleOp extends LinearOpMode {
             telemetry.addData("Right Magnet state" , limitSwitch.isRightLimitSwitchClosed());
             telemetry.addData("Current Velocity", rShooter.getVelocity());
             telemetry.addData("Target Velocity", velocity);
+            telemetry.addData("Turret Position", turret.getCurrentPosition());
             telemetry.update();
 
 

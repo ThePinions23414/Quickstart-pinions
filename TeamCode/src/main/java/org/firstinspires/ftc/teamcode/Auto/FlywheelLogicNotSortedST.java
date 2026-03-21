@@ -38,8 +38,8 @@ public class FlywheelLogicNotSortedST {
     private int shotsRemaining = 0;
     private int shotNumber = 1;
     private double flywheelVelocity = 0;
-    private double MIN_FLYWHEEL_RPM = 1400;
-    private double TARGET_FLYWHEEL_RPM = 1500;
+    private double MIN_FLYWHEEL_RPM = 1425;
+    private double TARGET_FLYWHEEL_RPM = 1475;
     private double FLYWHEEL_MAX_SPINUP_TIME = 2.75;
     double P = 140;
     double F = 14.04;
@@ -49,8 +49,8 @@ public class FlywheelLogicNotSortedST {
     private String pattern = "";
     double slot1Position = 0.32;
     double turretPosition = 0;
-    double lHoodPosition = 0.915;
-    double rHoodPosition = 0.085;
+    double lHoodPosition = 0.91;
+    double rHoodPosition = 0.09;
 
 
 
@@ -70,6 +70,8 @@ public class FlywheelLogicNotSortedST {
         limelight = hwMap.get(Limelight3A.class, "limelight");
 
         turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         lShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -111,9 +113,8 @@ public class FlywheelLogicNotSortedST {
                 lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 gate.setPosition(0.7);
-                gate.setPosition(0.7);
-                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setTargetPosition(0);
+                turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
 
                 lowerRoller.setPower(1);
