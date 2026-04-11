@@ -93,6 +93,7 @@ public class CastleDemo extends LinearOpMode {
                 gate.setPosition(0.3);
                 bLRamp.setPower(1);
                 bRRamp.setPower(-1);
+                tLRamp.setPower(1);
                 tRRamp.setPower(-1);
 
 
@@ -112,6 +113,7 @@ public class CastleDemo extends LinearOpMode {
             if (gamepad2.dpad_right) {
                 bLRamp.setPower(0);
                 bRRamp.setPower(0);
+                tLRamp.setPower(0);
                 tRRamp.setPower(0);
                 shooter.setPower(0);
             }
