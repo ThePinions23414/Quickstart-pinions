@@ -38,7 +38,6 @@ public class IntakeLogic {
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
         lLifter = hwMap.get(CRServo.class, "leftLifter");
         rLifter = hwMap.get(CRServo.class, "rightLifter");
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
         intakeState = IntakeLogic.IntakeState.IDLE;
 
@@ -68,7 +67,7 @@ public class IntakeLogic {
                     lowerRoller.setPower(1);
                     lLifter.setPower(1);
                     rLifter.setPower(-1);
-                    if(stateTimer.seconds() > 2){
+                    if(stateTimer.seconds() > 1.5){
                         lLifter.setPower(0);
                         rLifter.setPower(0);
                         stateTimer.reset();
@@ -79,7 +78,7 @@ public class IntakeLogic {
                     lowerRoller.setPower(1);
                     lLifter.setPower(1);
                     rLifter.setPower(-1);
-                    if(stateTimer.seconds() > 2.35){
+                    if(stateTimer.seconds() > 2.4){
                         lLifter.setPower(0);
                         rLifter.setPower(0);
                         stateTimer.reset();
@@ -91,7 +90,7 @@ public class IntakeLogic {
                 break;
             case SPINDEX:
                 if (ballsRemaining == 3) {
-                    if (stateTimer.seconds() > 0.7) {
+                    if (stateTimer.seconds() > 0.1) {
                         spindexer.setPosition(slot2Position);
                         ballsRemaining--;
 
@@ -100,7 +99,7 @@ public class IntakeLogic {
                     if(stateTimer.seconds() > 0.5){
                         lLifter.setPower(1);
                         rLifter.setPower(-1);
-                        if(stateTimer.seconds() > 2){
+                        if(stateTimer.seconds() > 0.75){
                             spindexer.setPosition(slot3Position);
                             ballsRemaining--;
                         }
@@ -109,7 +108,7 @@ public class IntakeLogic {
 
                 } else if (ballsRemaining == 1) {
 
-                    if(stateTimer.seconds() > 3.5){
+                    if(stateTimer.seconds() > 2){
                         spindexer.setPosition(slot1Position);
                         ballsRemaining--;
                     }

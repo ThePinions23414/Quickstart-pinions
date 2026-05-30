@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class FlywheelLogicNotSortedST {
     private DcMotorEx lShooter;
     private DcMotorEx rShooter;
-    private CRServo upperRoller;
+    private Servo PTO;
     private CRServo lowerRoller;
     private CRServo lLifter;
     private CRServo rLifter;
@@ -49,15 +49,15 @@ public class FlywheelLogicNotSortedST {
     private String pattern = "";
     double slot1Position = 0.32;
     double turretPosition = 0;
-    double lHoodPosition = 0.91;
-    double rHoodPosition = 0.09;
+    double lHoodPosition = 0.92;
+    double rHoodPosition = 0.08;
 
 
 
     public void init(HardwareMap hwMap) {
         leftHood = hwMap.get(Servo.class, "leftHood");
         rightHood = hwMap.get(Servo.class, "rightHood");
-        upperRoller = hwMap.get(CRServo.class, "upperRoller");
+        PTO = hwMap.get(Servo.class, "PTO");
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
         lLifter = hwMap.get(CRServo.class, "leftLifter");
         rLifter = hwMap.get(CRServo.class, "rightLifter");
@@ -80,7 +80,6 @@ public class FlywheelLogicNotSortedST {
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         lShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
         rShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
         turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -102,6 +101,8 @@ public class FlywheelLogicNotSortedST {
     public void update() {
         switch (flywheelState) {
             case IDLE:
+                intake.setPower(0);
+                PTO.setPosition(0.1);
                 gate.setPosition(0.7);
                 if (spinningUp) {
 
@@ -116,10 +117,11 @@ public class FlywheelLogicNotSortedST {
                 turret.setTargetPosition(0);
                 turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
+                PTO.setPosition(0.1);
 
                 lowerRoller.setPower(1);
-                upperRoller.setPower(0);
                 if(shotsRemaining > 0){
+                    PTO.setPosition(0.35);
                     stateTimer.reset();
                     shootTimer.reset();
                     flywheelState = FlywheelState.LAUNCH;
@@ -136,17 +138,15 @@ public class FlywheelLogicNotSortedST {
                     rLifter.setPower(-1);
                     intake.setPower(1);
 
-                    if (shootTimer.seconds() > 5 && shotNumber == 1){
-                        upperRoller.setPower(0);
+                    if (shootTimer.seconds() > 3.5 && shotNumber == 1){
                         shotsRemaining = 0;
                         shotNumber = 2;
                         flywheelState = FlywheelState.SPIN_UP;
-                    } else if (shootTimer.seconds() > 3 && shotNumber == 2) {
-                        upperRoller.setPower(0);
+                    } else if (shootTimer.seconds() > 1.5 && shotNumber == 2) {
                         shotsRemaining = 0;
                         flywheelState = FlywheelState.SPIN_UP;
                     }else{
-                        upperRoller.setPower(1);
+
                     }
                 }
 

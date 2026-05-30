@@ -36,7 +36,6 @@ public class IntakeLogicNotSorted {
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
         lLifter = hwMap.get(CRServo.class, "leftLifter");
         rLifter = hwMap.get(CRServo.class, "rightLifter");
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
         intakeState = IntakeState.IDLE;
 

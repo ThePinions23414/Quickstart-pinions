@@ -131,6 +131,7 @@ public class BlueGoal9BallSorted extends OpMode {
                 break;
             case DRIVE_PICK1POS_SHOOT2POS:
                 if(!follower.isBusy()){
+                    shooter.spinUp(true);
                     follower.followPath(drivePick1PosShoot2Pos, true);
                     setPathState(PathState.SHOOT_PRELOAD2);
                 }
@@ -172,6 +173,7 @@ public class BlueGoal9BallSorted extends OpMode {
 
             case BACK_UP_SHOOT3POS:
                 if(!follower.isBusy()){
+                    shooter.spinUp(true);
                     follower.followPath(backUpShoot3Pos, true);
                     setPathState(PathState.SHOOT_PRELOAD3);
                 }

@@ -37,7 +37,7 @@ public class CastleDemo extends LinearOpMode {
         Servo gate = hardwareMap.servo.get("gate");
         Servo shootAdjust = hardwareMap.servo.get("shooterAdjuster");
 
-        double driveSpeed = 0.4;
+        double driveSpeed = 1;
         double Power = 1;
 
 

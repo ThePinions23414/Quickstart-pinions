@@ -17,7 +17,8 @@ import java.util.List;
 public class FlywheelLogicSmallTriangle {
     private DcMotorEx lShooter;
     private DcMotorEx rShooter;
-    private CRServo upperRoller;
+    private DcMotor intake;
+    private Servo PTO;
     private CRServo lowerRoller;
     private DcMotorEx turret;
     private Servo gate;
@@ -55,8 +56,8 @@ public class FlywheelLogicSmallTriangle {
     double slot2Position = 0.39;
     double slot3Position = 0.465;
     double turretPosition = 0;
-    double lHoodPosition = 0.91;
-    double rHoodPosition = 0.09;
+    double lHoodPosition = 0.92;
+    double rHoodPosition = 0.08;
 
 
     private String pattern = "";
@@ -65,7 +66,8 @@ public class FlywheelLogicSmallTriangle {
     public void init(HardwareMap hwMap) {
         leftHood = hwMap.get(Servo.class, "leftHood");
         rightHood = hwMap.get(Servo.class, "rightHood");
-        upperRoller = hwMap.get(CRServo.class, "upperRoller");
+        intake = hwMap.get(DcMotor.class,"intake");
+        PTO = hwMap.get(Servo.class, "PTO");
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
         turret = hwMap.get(DcMotorEx.class, "turret");
         gate = hwMap.get(Servo.class, "gate");
@@ -131,6 +133,8 @@ public class FlywheelLogicSmallTriangle {
     public void update() {
         switch (flywheelState) {
             case IDLE:
+                intake.setPower(0);
+                PTO.setPosition(0.1);
                 if (spinningUp) {
 
                     stateTimer.reset();
@@ -145,7 +149,7 @@ public class FlywheelLogicSmallTriangle {
                 turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
                 lowerRoller.setPower(1);
-                upperRoller.setPower(0);
+                PTO.setPosition(0.35);
                 if(shotsRemaining > 0){
                     stateTimer.reset();
                     flywheelState = FlywheelState.SORT;
@@ -246,12 +250,11 @@ public class FlywheelLogicSmallTriangle {
                         gate.setPosition(0.2);
 
                         lowerRoller.setPower(1);
-
+                        intake.setPower(1);
 
 
 
                         if (shootTimer.seconds() > 1.25){
-                            upperRoller.setPower(0);
                             shotsRemaining--;
                             if (shotsRemaining > 0) {
                                 stateTimer.reset();
@@ -263,7 +266,7 @@ public class FlywheelLogicSmallTriangle {
 
                             }
                         } else {
-                            upperRoller.setPower(1);
+
                         }
                 }
 

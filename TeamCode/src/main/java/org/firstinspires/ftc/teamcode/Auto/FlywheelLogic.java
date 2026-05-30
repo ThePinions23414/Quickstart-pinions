@@ -17,7 +17,8 @@ import java.util.List;
 public class FlywheelLogic {
     private DcMotorEx lShooter;
     private DcMotorEx rShooter;
-    private CRServo upperRoller;
+    private DcMotor intake;
+    private Servo PTO;
     private CRServo lowerRoller;
     private DcMotorEx turret;
     private Servo gate;
@@ -62,7 +63,8 @@ public class FlywheelLogic {
     public void init(HardwareMap hwMap) {
         leftHood = hwMap.get(Servo.class, "leftHood");
         rightHood = hwMap.get(Servo.class, "rightHood");
-        upperRoller = hwMap.get(CRServo.class, "upperRoller");
+        intake = hwMap.get(DcMotor.class,"intake");
+        PTO = hwMap.get(Servo.class, "PTO");
         lowerRoller = hwMap.get(CRServo.class, "lowerRoller");
         turret = hwMap.get(DcMotorEx.class, "turret");
         gate = hwMap.get(Servo.class, "gate");
@@ -134,8 +136,9 @@ public class FlywheelLogic {
     public void update() {
         switch (flywheelState) {
             case IDLE:
+                PTO.setPosition(0.1);
+                gate.setPosition(0.7);
                 if (spinningUp) {
-
                     stateTimer.reset();
                     flywheelState = FlywheelState.SPIN_UP;
                 }
@@ -143,13 +146,15 @@ public class FlywheelLogic {
             case SPIN_UP:
                 lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
-                gate.setPosition(0.7);
                 turret.setTargetPosition(turretPosition);
                 turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
                 lowerRoller.setPower(1);
-                upperRoller.setPower(0);
+                PTO.setPosition(0.1);
+                gate.setPosition(0.7);
                 if(shotsRemaining > 0){
+                    PTO.setPosition(0.35);
+                    gate.setPosition(0.2);
                     stateTimer.reset();
                     flywheelState = FlywheelState.SORT;
                 }
@@ -246,14 +251,15 @@ public class FlywheelLogic {
 
                 if (rShooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
 
-                    gate.setPosition(0.2);
+
 
                     lowerRoller.setPower(1);
 
 
-                    if (shootTimer.seconds() > 1.45){
 
-                        upperRoller.setPower(0);
+
+                    if (shootTimer.seconds() > 1){
+
                         shotsRemaining--;
                         if (shotsRemaining > 0) {
                             stateTimer.reset();
@@ -261,11 +267,12 @@ public class FlywheelLogic {
                         }
                         else if(shotsRemaining == 0){
                             shotNumber++;
+                            spinningUp = false;
                             flywheelState = FlywheelState.IDLE;
 
                         }
-                    } else {
-                        upperRoller.setPower(1);
+                    }else{
+                        intake.setPower(1);
                     }
                 }
 
@@ -289,6 +296,6 @@ public class FlywheelLogic {
 
 
     public boolean isBusy() {
-        return flywheelState != FlywheelState.SPIN_UP;
+        return flywheelState != FlywheelState.IDLE;
     }
 }
