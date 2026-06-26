@@ -599,29 +599,29 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                         velocity = 1050;
                         P = 100;
                         F = 13.51;
-                        lHood.setPosition(0.95);
-                        rHood.setPosition(0.05);
+                        lHood.setPosition(0.975);
+                        rHood.setPosition(0.025);
                     } else if (result.getTa() < 2.9 && result.getTa() > 2.5) {
                         turretClass.setGoalXOffset(-2);
                         velocity = 1075;
                         P = 100;
                         F = 12.7;
-                        lHood.setPosition(0.95);
-                        rHood.setPosition(0.05);
+                        lHood.setPosition(0.975);
+                        rHood.setPosition(0.025);
                     }else if (result.getTa() < 2.5 && result.getTa() > 2) {
                         turretClass.setGoalXOffset(-2);
                         velocity = 1100;
                         P = 100;
                         F = 12.46;
-                        lHood.setPosition(0.925);
-                        rHood.setPosition(0.075);
+                        lHood.setPosition(0.95);
+                        rHood.setPosition(0.05);
                     } else if (result.getTa() < 2 && result.getTa() > 1.5) {
                         turretClass.setGoalXOffset(-2);
                         velocity = 1150;
                         P = 100;
                         F = 12.51;
-                        lHood.setPosition(0.925);
-                        rHood.setPosition(0.075);
+                        lHood.setPosition(0.95);
+                        rHood.setPosition(0.05);
                     }else if (result.getTa() < 1.5 && result.getTa() > 1) {
                         turretClass.setGoalXOffset(-2);
                         velocity = 1200;
@@ -695,8 +695,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                 velocity = 1025;
                 P = 100;
                 F = 13.51;
-                lHood.setPosition(0.95);
-                rHood.setPosition(0.05);
+                lHood.setPosition(0.975);
+                rHood.setPosition(0.025);
             }
 
 
@@ -795,8 +795,8 @@ public class RED_Decode_TeleOp extends LinearOpMode {
                 velocity = 1175;
                 P = 100;
                 F = 12.46;
-                lHood.setPosition(0.95);
-                rHood.setPosition(0.1);
+                lHood.setPosition(0.975);
+                rHood.setPosition(0.025);
                 shooterActivated = true;
             }
             if(gamepad2.dpad_up && override){

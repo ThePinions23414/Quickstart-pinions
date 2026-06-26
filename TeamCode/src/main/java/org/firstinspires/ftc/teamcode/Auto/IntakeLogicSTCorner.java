@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class IntakeLogicSmallTriangle {
+public class IntakeLogicSTCorner {
 
 
 
@@ -30,7 +30,7 @@ public class IntakeLogicSmallTriangle {
         SPINDEX;
 
     }
-    private IntakeLogicSmallTriangle.IntakeState intakeState;
+    private IntakeLogicSTCorner.IntakeState intakeState;
 
     public void init(HardwareMap hwMap) {
         spindexer = hwMap.get(Servo.class, "spindexer");
@@ -39,7 +39,7 @@ public class IntakeLogicSmallTriangle {
         lLifter = hwMap.get(CRServo.class, "leftLifter");
         rLifter = hwMap.get(CRServo.class, "rightLifter");
 
-        intakeState = IntakeLogicSmallTriangle.IntakeState.IDLE;
+        intakeState = IntakeLogicSTCorner.IntakeState.IDLE;
 
         spindexer.setPosition(0);
 
@@ -78,7 +78,7 @@ public class IntakeLogicSmallTriangle {
                     lowerRoller.setPower(1);
                     lLifter.setPower(1);
                     rLifter.setPower(-1);
-                    if(stateTimer.seconds() > 2.35){
+                    if(stateTimer.seconds() > 2.5){
                         lLifter.setPower(0);
                         rLifter.setPower(0);
                         stateTimer.reset();
@@ -99,7 +99,7 @@ public class IntakeLogicSmallTriangle {
                     if(stateTimer.seconds() > 0.65){
                         lLifter.setPower(1);
                         rLifter.setPower(-1);
-                        if(stateTimer.seconds() > 1.5){
+                        if(stateTimer.seconds() > 1.35){
                             spindexer.setPosition(slot3Position);
                             ballsRemaining--;
                         }
@@ -134,7 +134,7 @@ public class IntakeLogicSmallTriangle {
 
     public boolean isStillGoing() {
 
-        return intakeState != IntakeLogicSmallTriangle.IntakeState.IDLE;
+        return intakeState != IntakeLogicSTCorner.IntakeState.IDLE;
     }
 }
 

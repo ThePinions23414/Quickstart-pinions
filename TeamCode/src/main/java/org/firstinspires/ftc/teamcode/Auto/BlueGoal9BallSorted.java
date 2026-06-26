@@ -44,7 +44,7 @@ public class BlueGoal9BallSorted extends OpMode {
     private final Pose startPose = new Pose(20.24999, 123.927644166881, Math.toRadians(323.5));
     private final Pose shoot1Pose = new Pose(47.84192, 95.8023690459329, Math.toRadians(136.5));
     private final Pose ball1Pose = new Pose(42.98681, 84.5, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(21.00656, 84.5, Math.toRadians(180));
+    private final Pose pick1Pose = new Pose(20.00656, 84.5, Math.toRadians(180));
     private final Pose shoot2Pose = new Pose(47.84192, 95.8023690459329, Math.toRadians(138.5));
     private final Pose ball2Pose = new Pose(44.96708, 60.26978997878086, Math.toRadians(180));
     private final Pose pick2Pose = new Pose(12.18419, 60.20268438143005, Math.toRadians(180));

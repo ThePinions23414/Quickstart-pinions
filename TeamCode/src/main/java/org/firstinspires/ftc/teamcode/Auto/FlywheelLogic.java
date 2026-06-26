@@ -55,8 +55,8 @@ public class FlywheelLogic {
     double slot2Position = 0.39;
     double slot3Position = 0.465;
     int turretPosition = 0;
-    double lHoodPosition = 0.925;
-    double rHoodPosition = 0.075;
+    double lHoodPosition = 0.975;
+    double rHoodPosition = 0.025;
 
 
 

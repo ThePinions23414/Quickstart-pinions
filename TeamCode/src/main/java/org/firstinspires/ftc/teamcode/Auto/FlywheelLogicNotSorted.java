@@ -49,8 +49,8 @@ public class FlywheelLogicNotSorted {
     private String pattern = "";
     double slot1Position = 0.32;
     double turretPosition = 0;
-    double lHoodPosition = 0.925;
-    double rHoodPosition = 0.075;
+    double lHoodPosition = 0.975;
+    double rHoodPosition = 0.025;
 
 
 
@@ -115,6 +115,7 @@ public class FlywheelLogicNotSorted {
                 gate.setPosition(0.7);
                 turret.setTargetPosition(0);
                 turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setPower(1);
                 PTO.setPosition(0.1);
                 lowerRoller.setPower(1);
                 if(shotsRemaining > 0){

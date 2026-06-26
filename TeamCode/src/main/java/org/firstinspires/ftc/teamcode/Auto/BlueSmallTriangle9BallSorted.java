@@ -46,11 +46,11 @@ public class BlueSmallTriangle9BallSorted extends OpMode {
     private final Pose startPose = new Pose(55.9975, 8.177777777777768, Math.toRadians(90));
     private final Pose shoot1Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(118));
     private final Pose ball1Pose = new Pose(47.68541, 35.227930535455855, Math.toRadians(180));
-    private final Pose pick1Pose = new Pose(14.73661, 35.21635311143271, Math.toRadians(180));
-    private final Pose shoot2Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(116));
-    private final Pose ball2Pose = new Pose(44.96708, 59.26978997878086, Math.toRadians(180));
-    private final Pose pick2Pose = new Pose(14.18419, 59.20268438143005, Math.toRadians(180));
-    private final Pose shoot3Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(116));
+    private final Pose pick1Pose = new Pose(9, 35.21635311143271, Math.toRadians(180));
+    private final Pose shoot2Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(118));
+    private final Pose ball2Pose = new Pose(44.96708, 60.26978997878086, Math.toRadians(180));
+    private final Pose pick2Pose = new Pose(10, 60.20268438143005, Math.toRadians(180));
+    private final Pose shoot3Pose = new Pose(55.55555, 12.177777777777763, Math.toRadians(118));
     private final Pose endPose = new Pose(45.402, 24.37153723529663, Math.toRadians(90));
 
 
@@ -128,6 +128,7 @@ public class BlueSmallTriangle9BallSorted extends OpMode {
                 break;
             case DRIVE_PICK1POS_SHOOT2POS:
                 if(!follower.isBusy()){
+                    shooter.spinUp(true);
                     follower.followPath(drivePick1PosShoot2Pos, true);
                     setPathState(PathState.SHOOT_PRELOAD2);
                 }
@@ -159,6 +160,7 @@ public class BlueSmallTriangle9BallSorted extends OpMode {
                 break;
             case DRIVE_PICK2POS_SHOOT3POS:
                 if(!follower.isBusy()){
+                    shooter.spinUp(true);
                     follower.followPath(drivePick2Shoot3, true);
                     setPathState(PathState.SHOOT_PRELOAD3);
                 }

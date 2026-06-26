@@ -43,7 +43,7 @@ public class FlywheelLogicSmallTriangle {
     private int shotNumber = 1;
     private double flywheelVelocity = 0;
     private double MIN_FLYWHEEL_RPM = 1400;
-    private double TARGET_FLYWHEEL_RPM = 1475;
+    private double TARGET_FLYWHEEL_RPM = 1450;
     private double FLYWHEEL_MAX_SPINUP_TIME = 2.75;
     double P = 140;
     double F = 14.04;
@@ -133,8 +133,8 @@ public class FlywheelLogicSmallTriangle {
     public void update() {
         switch (flywheelState) {
             case IDLE:
-                intake.setPower(0);
                 PTO.setPosition(0.1);
+                gate.setPosition(0.7);
                 if (spinningUp) {
 
                     stateTimer.reset();
@@ -144,13 +144,15 @@ public class FlywheelLogicSmallTriangle {
             case SPIN_UP:
                 lShooter.setVelocity(TARGET_FLYWHEEL_RPM);
                 rShooter.setVelocity(TARGET_FLYWHEEL_RPM);
-                gate.setPosition(0.7);
                 turret.setTargetPosition(0);
                 turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPower(1);
                 lowerRoller.setPower(1);
-                PTO.setPosition(0.35);
+                PTO.setPosition(0.1);
+                gate.setPosition(0.7);
                 if(shotsRemaining > 0){
+                    PTO.setPosition(0.35);
+                    gate.setPosition(0.2);
                     stateTimer.reset();
                     flywheelState = FlywheelState.SORT;
                 }
@@ -247,29 +249,30 @@ public class FlywheelLogicSmallTriangle {
 
                 if (rShooter.getVelocity() > MIN_FLYWHEEL_RPM || stateTimer.seconds() > FLYWHEEL_MAX_SPINUP_TIME) {
 
-                        gate.setPosition(0.2);
-
-                        lowerRoller.setPower(1);
-                        intake.setPower(1);
 
 
+                    lowerRoller.setPower(1);
 
-                        if (shootTimer.seconds() > 1.25){
-                            shotsRemaining--;
-                            if (shotsRemaining > 0) {
-                                stateTimer.reset();
-                                flywheelState = FlywheelState.SORT;
-                            }
-                            else if(shotsRemaining == 0){
-                                shotNumber++;
-                                flywheelState = FlywheelState.IDLE;
 
-                            }
-                        } else {
+
+
+                    if (shootTimer.seconds() > 1){
+
+                        shotsRemaining--;
+                        if (shotsRemaining > 0) {
+                            stateTimer.reset();
+                            flywheelState = FlywheelState.SORT;
+                        }
+                        else if(shotsRemaining == 0){
+                            shotNumber++;
+                            spinningUp = false;
+                            flywheelState = FlywheelState.IDLE;
 
                         }
+                    }else{
+                        intake.setPower(1);
+                    }
                 }
-
 
                 break;
 
@@ -291,7 +294,7 @@ public class FlywheelLogicSmallTriangle {
 
 
     public boolean isBusy() {
-        return flywheelState != FlywheelState.SPIN_UP;
+        return flywheelState != FlywheelState.IDLE;
     }
 }
 
