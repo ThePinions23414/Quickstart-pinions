@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constance;
 
 
 
@@ -60,7 +60,9 @@ public class LimelightPositioning extends OpMode {
 
             case LIMEPATHINGPATH:
                 follower.followPath(limePath, true);
-                setPathState(PathState.IDLE);
+                if(!follower.isBusy()){
+                    setPathState(PathState.IDLE);
+                }
                 break;
 
             default:
@@ -82,7 +84,7 @@ public class LimelightPositioning extends OpMode {
         pathState = PathState.IDLE;
         pathTimer = new Timer();
         opModeTimer = new Timer();
-        follower = Constants.createFollower(hardwareMap);
+        follower = Constance.createFollower(hardwareMap);
 
 
         buildPaths();
