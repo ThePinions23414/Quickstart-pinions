@@ -47,21 +47,21 @@ public class LimelightPositioning2 extends OpMode {
     @Override
     public void init() {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+//        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         limelight.pipelineSwitch(0);
         imu = hardwareMap.get(IMU.class, "imu");
         RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
         imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
         follower = Constance.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(72,72,90));
-        pinpoint.setOffsets(-0.787, 1.1, DistanceUnit.INCH);
-        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
-
-        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD,
-                GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        pinpoint.resetPosAndIMU();
+        follower.setStartingPose(new Pose(72,72,0));
+//        pinpoint.setOffsets(-0.787, 1.1, DistanceUnit.INCH);
+//        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+//
+//        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+//        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD,
+//                GoBildaPinpointDriver.EncoderDirection.FORWARD);
+//        pinpoint.resetPosAndIMU();
 
     }
 
@@ -73,15 +73,16 @@ public class LimelightPositioning2 extends OpMode {
 
     @Override
     public void loop() {
-        pinpoint.update();
-        Pose2D pose2D = pinpoint.getPosition();
+//        pinpoint.update();
+//        Pose2D pose2D = pinpoint.getPosition();
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         telemetry.addData("IMU Yaw", orientation.getYaw());
         limelight.updateRobotOrientation(orientation.getYaw());
         LLResult llResult = limelight.getLatestResult();
         if (llResult != null && llResult.isValid()) {
             Pose3D botPose = llResult.getBotpose_MT2();
-            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, pedroPathingYPos, pedroPathingXPos, AngleUnit.DEGREES, limelightAngle));
+//            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, pedroPathingYPos, pedroPathingXPos, AngleUnit.DEGREES, orientation.getYaw()));
+            follower.setPose(new Pose(pedroPathingYPos, pedroPathingXPos, Math.toRadians(pedroPathingAngle)));
             if (botPose != null) {
                 limelightXPos = botPose.getPosition().x * 39.3700787402;
                 limelightYPos = botPose.getPosition().y * 39.3700787402;
@@ -92,9 +93,7 @@ public class LimelightPositioning2 extends OpMode {
             }
         }
 
-//        pedroPathingXPos = (limelightXPos * 39.3700787402) + 72;
-//        pedroPathingYPos = (limelightYPos * 39.3700787402) + 72;
-        limePathingAngle = pose2D.getHeading(AngleUnit.DEGREES) + 270;
+        limePathingAngle = orientation.getYaw() + 270;
         if (limePathingAngle >= 360) {
             pedroPathingAngle = limePathingAngle - 360;
         } else {
@@ -105,25 +104,19 @@ public class LimelightPositioning2 extends OpMode {
         pedroPathingXPos = limelightYPos + 72;
         pedroPathingYPos = -limelightXPos + 72;
 
-//        if (limelightXPos >= 0 && limelightYPos >= 0 || limelightXPos < 0 && limelightYPos < 0){
-//            pedroPathingXPos = Math.abs(limelightYPos + 72);
-//            pedroPathingYPos = Math.abs(limelightXPos - 72);
-//        } else if (limelightXPos < 0 && limelightYPos >= 0 || limelightXPos >= 0 && limelightYPos < 0) {
-//            pedroPathingXPos = Math.abs(limelightYPos - 72);
-//            pedroPathingYPos = Math.abs(limelightXPos + 72);
-//        }
 
 
 
-        //follower.setPose(new Pose(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH), pedroPathingAngle));
-//        follower.update();
+//        follower.setPose(new Pose(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH), pedroPathingAngle));
+        follower.update();
 //
         telemetry.addData("pedroPathingXPos", pedroPathingXPos);
         telemetry.addData("pedroPathingYPos", pedroPathingYPos);
         telemetry.addData("pedroPathingAngle", pedroPathingAngle);
-        telemetry.addData("pinpointX", pose2D.getY(DistanceUnit.INCH));
-        telemetry.addData("pinpointY", pose2D.getX(DistanceUnit.INCH));
-        telemetry.addData("pinpointAngle", pose2D.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("follower pose", follower.getPose());
+//        telemetry.addData("pinpointX", pose2D.getY(DistanceUnit.INCH));
+//        telemetry.addData("pinpointY", pose2D.getX(DistanceUnit.INCH));
+//        telemetry.addData("pinpointAngle", pose2D.getHeading(AngleUnit.DEGREES));
 
 
 //        if (!following) {
@@ -139,10 +132,9 @@ public class LimelightPositioning2 extends OpMode {
 //            following = false;
 //        }
 
-         }
+    }
 
 //        private Pose getRobotPoseFromCamera() {
 //            return new Pose(limelightXPos, limelightYPos, limelightAngle, FTCCoordinates.INSTANCE).getAsCoordinateSystem(PedroCoordinates.INSTANCE);
 //        }
 }
-
