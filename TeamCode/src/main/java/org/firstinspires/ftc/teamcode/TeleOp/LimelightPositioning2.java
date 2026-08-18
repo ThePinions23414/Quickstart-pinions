@@ -36,6 +36,7 @@ public class LimelightPositioning2 extends OpMode {
     double pedroPathingYPos;
     double limePathingAngle;
     double pedroPathingAngle;
+    boolean iSawTheSign = false;
     private Follower follower;
     private IMU imu;
     private boolean following = false;
@@ -82,8 +83,8 @@ public class LimelightPositioning2 extends OpMode {
         if (llResult != null && llResult.isValid()) {
             Pose3D botPose = llResult.getBotpose_MT2();
 //            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, pedroPathingYPos, pedroPathingXPos, AngleUnit.DEGREES, orientation.getYaw()));
-            follower.setPose(new Pose(pedroPathingYPos, pedroPathingXPos, Math.toRadians(pedroPathingAngle)));
             if (botPose != null) {
+                iSawTheSign = true;
                 limelightXPos = botPose.getPosition().x * 39.3700787402;
                 limelightYPos = botPose.getPosition().y * 39.3700787402;
                 limelightAngle = botPose.getOrientation().getYaw(AngleUnit.DEGREES);
@@ -91,6 +92,8 @@ public class LimelightPositioning2 extends OpMode {
                 telemetry.addData("limelightYPos", limelightYPos);
                 telemetry.addData("limelightAngle", limelightAngle);
             }
+        } else {
+            iSawTheSign = false;
         }
 
         limePathingAngle = orientation.getYaw() + 270;
@@ -131,6 +134,10 @@ public class LimelightPositioning2 extends OpMode {
 //        else if (following && !follower.isBusy()) {
 //            following = false;
 //        }
+        if(iSawTheSign){
+            follower.setPose(new Pose(pedroPathingXPos, pedroPathingYPos, Math.toRadians(pedroPathingAngle)));
+        }
+
 
     }
 
