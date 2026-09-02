@@ -14,6 +14,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorGoBildaPinpoint;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -40,7 +41,9 @@ public class LimelightPositioning2 extends OpMode {
     private Follower follower;
     private IMU imu;
     private boolean following = false;
+    private boolean iAmAllDone = false;
     private final Pose TARGET_LOCATION = new Pose(105.6, 33.33333333333334, Math.toRadians(90));
+    private ElapsedTime pathTimer = new ElapsedTime();
 
 
 
@@ -70,6 +73,7 @@ public class LimelightPositioning2 extends OpMode {
     public void start() {
         limelight.start();
         follower.startTeleopDrive(true);
+        pathTimer.reset();
 
     }
 
@@ -130,10 +134,16 @@ public class LimelightPositioning2 extends OpMode {
                             .setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.getHeading())
                             //.setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.minus(follower.getPose()).getAsVector().getTheta())
                             .build()
+                    , true
             );
             following = true;
         }
-        if (following && (gamepad1.bWasPressed() || !follower.isBusy())) {
+        if(following && !follower.isBusy() && !iAmAllDone){
+            pathTimer.reset();
+            iAmAllDone = true;
+        }
+        if (following && (gamepad1.bWasPressed() || (pathTimer.seconds() > 0.5 && iAmAllDone))) {
+            iAmAllDone = false;
             follower.startTeleopDrive();
             following = false;
         }
