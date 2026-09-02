@@ -69,6 +69,7 @@ public class LimelightPositioning2 extends OpMode {
     @Override
     public void start() {
         limelight.start();
+        follower.startTeleopDrive(true);
 
     }
 
@@ -76,6 +77,7 @@ public class LimelightPositioning2 extends OpMode {
     public void loop() {
 //        pinpoint.update();
 //        Pose2D pose2D = pinpoint.getPosition();
+        follower.update();
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         telemetry.addData("IMU Yaw", orientation.getYaw());
         limelight.updateRobotOrientation(orientation.getYaw());
@@ -110,33 +112,48 @@ public class LimelightPositioning2 extends OpMode {
 
 
 
-//        follower.setPose(new Pose(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH), pedroPathingAngle));
-        follower.update();
-//
+        if (!following) {
+            follower.setTeleOpDrive(
+                    -gamepad1.left_stick_y,
+                    -gamepad1.left_stick_x,
+                    -gamepad1.right_stick_x,
+                    true
+            );
+
+        }
+
+
+        if (gamepad1.aWasPressed()) {
+            follower.followPath(
+                    follower.pathBuilder()
+                            .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
+                            .setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.getHeading())
+                            //.setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.minus(follower.getPose()).getAsVector().getTheta())
+                            .build()
+            );
+            following = true;
+        }
+        if (following && (gamepad1.bWasPressed() || !follower.isBusy())) {
+            follower.startTeleopDrive();
+            following = false;
+        }
+//        if (following && !follower.isBusy()) {
+//            following = false;
+//        }
+        if(iSawTheSign && !following){
+            follower.setPose(new Pose(pedroPathingXPos, pedroPathingYPos, Math.toRadians(pedroPathingAngle)));
+        }
+
         telemetry.addData("pedroPathingXPos", pedroPathingXPos);
         telemetry.addData("pedroPathingYPos", pedroPathingYPos);
         telemetry.addData("pedroPathingAngle", pedroPathingAngle);
-        telemetry.addData("follower pose", follower.getPose());
+        telemetry.addData("followerX", String.format("%.2f", follower.getPose().getX()));
+        telemetry.addData("followerY", String.format("%.2f", follower.getPose().getY()));
+        telemetry.addData("followerHeading", String.format("%.2f", Math.toDegrees(follower.getPose().getHeading())));
+        telemetry.addData("followering", following);
 //        telemetry.addData("pinpointX", pose2D.getY(DistanceUnit.INCH));
 //        telemetry.addData("pinpointY", pose2D.getX(DistanceUnit.INCH));
 //        telemetry.addData("pinpointAngle", pose2D.getHeading(AngleUnit.DEGREES));
-
-
-//        if (!following) {
-//            following = true;
-//            follower.followPath(
-//                    follower.pathBuilder()
-//                            .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
-//                            .setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.minus(follower.getPose()).getAsVector().getTheta())
-//                            .build()
-//            );
-//        }
-//        else if (following && !follower.isBusy()) {
-//            following = false;
-//        }
-        if(iSawTheSign){
-            follower.setPose(new Pose(pedroPathingXPos, pedroPathingYPos, Math.toRadians(pedroPathingAngle)));
-        }
 
 
     }
